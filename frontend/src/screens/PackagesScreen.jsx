@@ -1,288 +1,130 @@
-import { Button } from "@/components/ui/button";
 import React from "react";
+import packages from "../packages";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Package from "@/components/shared/Package";
+import { Button } from "@/components/ui/button";
 
-const packages = [
-  {
-    id: 1,
-    title: "Sri Lanka X Simridhi Makhija",
-    image: "https://images.unsplash.com/photo-1548013146-72479768bada",
-
-    badge: "NEW",
-    tags: ["PRIVATE TOUR", "BEACH", "FRIENDS"],
-
-    rating: 5,
-    reviews: 29,
-
-    inclusive: true,
-
-    days: "7 Nights 8 Days",
-    destinations: 5,
-    departures: 1,
-
-    highlights:
-      "Day 1 — Colombo → Mirissa Land Drive. Breathe Salt Air, Day 2 — Mirissa Whales at Dawn.",
-
-    price: 39999,
-    priceNote: "Prices are on a twin-sharing basis.",
-  },
-
-  {
-    id: 2,
-    title: "Cambodia & Laos Heritage Discovery Tour",
-    image: "https://images.unsplash.com/photo-1558980664-10e7170b5e4b",
-
-    badge: "HOT DEAL",
-    tags: ["FAMILY TOUR", "CULTURE", "NATURE"],
-
-    rating: 5,
-    reviews: 1200,
-
-    inclusive: true,
-
-    days: "7 Days 6 Nights",
-    destinations: 2,
-    departures: 2,
-
-    highlights:
-      "Explore Angkor Wat & ancient temples. Enjoy Apsara Dance Show.",
-
-    price: 79999,
-    priceNote: "Prices are per person on twin-sharing basis.",
-  },
-
-  {
-    id: 3,
-    title: "Philippines Island Romance Escape",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-
-    badge: "HOT DEAL",
-    tags: ["HONEYMOON", "BEACH", "COUPLE"],
-
-    rating: 5,
-    reviews: 1200,
-
-    inclusive: true,
-
-    days: "7 Days 6 Nights",
-    destinations: 3,
-    departures: 2,
-
-    highlights: "Island hopping, beach sunset, romantic dinners.",
-
-    price: 119999,
-    priceNote: "Prices are per person on twin-sharing basis.",
-  },
-
-  // add more similar objects (copy pattern)
-
-  {
-    id: 4,
-    title: "Dubai Luxury Escape",
-    image: "https://images.unsplash.com/photo-1504274066651-8d31a536b11a",
-    badge: "NEW",
-    tags: ["LUXURY", "CITY"],
-    rating: 4,
-    reviews: 540,
-    inclusive: true,
-    days: "5 Days 4 Nights",
-    destinations: 2,
-    departures: 3,
-    highlights: "Burj Khalifa, Desert Safari, Marina Cruise",
-    price: 54999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 5,
-    title: "Maldives Water Villa Experience",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    badge: "HOT DEAL",
-    tags: ["LUXURY", "HONEYMOON"],
-    rating: 5,
-    reviews: 760,
-    inclusive: true,
-    days: "4 Days 3 Nights",
-    destinations: 1,
-    departures: 2,
-    highlights: "Water villa stay, snorkeling, private dinner",
-    price: 129999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 6,
-    title: "Thailand Adventure Trip",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-    badge: "",
-    tags: ["ADVENTURE", "FRIENDS"],
-    rating: 4,
-    reviews: 880,
-    inclusive: true,
-    days: "6 Days 5 Nights",
-    destinations: 3,
-    departures: 4,
-    highlights: "Bangkok, Phuket, island tours",
-    price: 45999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 7,
-    title: "Goa Beach Party",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    badge: "",
-    tags: ["BEACH", "PARTY"],
-    rating: 4,
-    reviews: 420,
-    inclusive: true,
-    days: "3 Days 2 Nights",
-    destinations: 1,
-    departures: 5,
-    highlights: "Beach party, water sports",
-    price: 19999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 8,
-    title: "Kashmir Paradise Tour",
-    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-    badge: "",
-    tags: ["NATURE", "FAMILY"],
-    rating: 5,
-    reviews: 650,
-    inclusive: true,
-    days: "5 Days 4 Nights",
-    destinations: 3,
-    departures: 3,
-    highlights: "Srinagar, Gulmarg, Pahalgam",
-    price: 29999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 9,
-    title: "Europe Highlights Tour",
-    image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b",
-    badge: "HOT DEAL",
-    tags: ["LUXURY", "CULTURE"],
-    rating: 5,
-    reviews: 1500,
-    inclusive: true,
-    days: "10 Days 9 Nights",
-    destinations: 5,
-    departures: 2,
-    highlights: "Paris, Rome, Switzerland",
-    price: 189999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 10,
-    title: "Bali Tropical Escape",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    badge: "",
-    tags: ["NATURE", "HONEYMOON"],
-    rating: 4,
-    reviews: 700,
-    inclusive: true,
-    days: "6 Days 5 Nights",
-    destinations: 2,
-    departures: 2,
-    highlights: "Ubud, temples, beaches",
-    price: 55999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 11,
-    title: "Himachal Adventure",
-    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-    badge: "",
-    tags: ["MOUNTAINS", "ADVENTURE"],
-    rating: 4,
-    reviews: 530,
-    inclusive: true,
-    days: "5 Days 4 Nights",
-    destinations: 3,
-    departures: 3,
-    highlights: "Manali, Solang Valley",
-    price: 24999,
-    priceNote: "Twin-sharing basis",
-  },
-
-  {
-    id: 12,
-    title: "Singapore City Explorer",
-    image: "https://images.unsplash.com/photo-1508962914676-134849a727f0",
-    badge: "",
-    tags: ["CITY", "FAMILY"],
-    rating: 5,
-    reviews: 610,
-    inclusive: true,
-    days: "5 Days 4 Nights",
-    destinations: 2,
-    departures: 2,
-    highlights: "Sentosa, Universal Studios",
-    price: 69999,
-    priceNote: "Twin-sharing basis",
-  },
+const tags = [
+  "All Tags",
+  "Sri Lanka",
+  "Turquoise Beach",
+  "Mirissa",
+  "Ella",
+  "Kandy",
+  "Nuwara Eliya",
+  "Tea Plantation",
+  "Beach",
+  "Peaceful Beaches",
+  "International",
+  "Culture",
+  "Heritage",
+  "Nature",
+  "Couples",
+  "Family",
+  "Southeast Asia",
+  "Premium Tour",
+  "Honeymoon",
+  "Island Escape",
+  "Luxury",
+  "Romantic Getaway",
 ];
 
 function PackagesScreen() {
   return (
-    <div className="flex">
-      {/* Left  */}
-      <div className="w-[20%]">filter card</div>
+    <div>
+      <div className="flex gap-12 justify-evenly">
+        <div className="px-10">
+          <h3>32 Holiday Packages</h3>
+          <p>Showing 32 packages out of 32 total packages</p>
+        </div>
+        <div>
+          <p>Theme</p>
+          <Select>
+            <SelectTrigger className="w-[300px]">
+              <SelectValue placeholder="All Themes" />
+            </SelectTrigger>
 
-      {/* Right */}
-      <div className="w-[80%]">
-        {packages.map((pkg) => (
-          <div className="bg-white rounded-xl shadow p-4 flex gap-4">
-            <div className="w-[220px] h-[150px] object-cover overflow-hidden">
-              <img src={pkg.image} alt={pkg.title} />
-            </div>
-            <div>
-              <h1>{pkg.title}</h1>
-              <div className="flex gap-3 ">
-                {pkg.tags.map((tag, index) => (
-                  <span key={index} className=" bg-red-400 rounded-lg p-1">
-                    {tag.toUpperCase()}
-                  </span>
+            <SelectContent className="max-h-[300px] overflow-y-auto bg-white">
+              <SelectGroup>
+                <SelectLabel>Themes</SelectLabel>
+
+                <SelectItem value="all">All Themes</SelectItem>
+                <SelectItem value="beach">BEACH</SelectItem>
+                <SelectItem value="culture">
+                  CULTURE | HERITAGE | NATURE
+                </SelectItem>
+                <SelectItem value="international">INTERNATIONAL</SelectItem>
+                <SelectItem value="premium">
+                  CULTURE | CHERRY BLOSSOM | PREMIUM
+                </SelectItem>
+                <SelectItem value="leisure">INTERNATIONAL | LEISURE</SelectItem>
+                <SelectItem value="nature">
+                  Nature, mountains, lakes & city exploration
+                </SelectItem>
+                <SelectItem value="combo">BEACH | CULTURE | NATURE</SelectItem>
+                <SelectItem value="trek">TREK</SelectItem>
+                <SelectItem value="heritage">HERITAGE</SelectItem>
+                <SelectItem value="adventure">ADVENTURE</SelectItem>
+                <SelectItem value="wildlife">
+                  ADVENTURE (Wildlife Safari / Nature / Offbeat Experience)
+                </SelectItem>
+                <SelectItem value="nature-adv">Nature & Adventure</SelectItem>
+                <SelectItem value="mountains">
+                  ADVENTURE • CAFE • MOUNTAINS
+                </SelectItem>
+                <SelectItem value="luxury">Private Luxury Tour</SelectItem>
+                <SelectItem value="wellness">
+                  Private Tour / Wellness Retreat
+                </SelectItem>
+                <SelectItem value="himalaya">HIM • NATURE • TREK</SelectItem>
+                <SelectItem value="camping">
+                  TREK • HIMALAYA • CAMPING • NATURE
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <p>Tag</p>
+          <Select onValueChange={(value) => setSelectedTag(value)}>
+            <SelectTrigger className="w-[300px]">
+              <SelectValue placeholder="All Tags" />
+            </SelectTrigger>
+
+            <SelectContent className="max-h-[300px] overflow-y-auto bg-white">
+              <SelectGroup>
+                {tags.map((tag, index) => (
+                  <SelectItem key={index} value={tag}>
+                    {tag}
+                  </SelectItem>
                 ))}
-              </div>
-              <div className="flex">
-                <p>{pkg.reviews}</p>
-              </div>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
-              <div className="flex gap-4  ">
-                <div>
-                  <p>DAYS</p>
-                  <span className="underline">{pkg.days}</span>
-                </div>
-                <div>
-                  <p>DESTINATIONS</p>
-                  <span className="underline">{pkg.destinations} CITIES</span>
-                </div>
-                <div>
-                  <p>DEPARTURES</p>
-                  <span className="underline">{pkg.departures}</span>
-                </div>
-              </div>
-              <div>
-                <h4>TOUR HIGHLIGHT</h4>
-                <p>{pkg.highlights}</p>
-              </div>
-            </div>
-            <div className="border border-gray-600">
-              <p>Starts from</p>
-              <h3>{pkg.price}</h3>
-              <p>{pkg.priceNote}</p>
-              <Button className="block">Reserve your spot</Button>
-              <Button>View Tour Details</Button>
+      <div className="flex">
+        {/* Left  */}
+        <div className="w-[20%] p-8">
+          <div className="shadow-lg border bg-white p-6">
+            <div className="flex justify-between">
+              <p>Filter Your Tour</p>
+              <Button>Reset</Button>
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* Right */}
+        <Package packages={packages} />
       </div>
     </div>
   );
