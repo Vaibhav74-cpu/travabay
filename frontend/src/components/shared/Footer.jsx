@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -43,30 +44,55 @@ function Footer() {
         <div>
           <div>
             <h3>Discover us</h3>
-            <p>Guests Reviews</p>
-            <p>About Us</p>
+            <ul>
+              <li>
+                <Link to="">Guests Reviews</Link>
+              </li>
+              <li>
+                <Link to="/about-us">About Us</Link>
+              </li>
+            </ul>
           </div>
         </div>
 
         {/* contact */}
         <div>
           <h3>Support</h3>
-          <p>Contact Us</p>
-          <p>Leave Your Feedback</p>
-          <p>FAQ</p>
-          <p>Travel Deals</p>
+          <ul>
+            <li>
+              <Link to="/contact-us">Contact Us</Link>
+            </li>
+            <li>
+              <Link to="">Leave Your Feedback</Link>
+            </li>
+            <li>
+              <Link to="faq">FAQ</Link>
+            </li>
+            <li>
+              <Link to="/packages">Travel Deals</Link>
+            </li>
+          </ul>
         </div>
 
         {/* social media links */}
         <div>
           <h3>Resources</h3>
-          <p>Facebook</p>
-          <p>Instagram</p>
-          <p>YouTube</p>
-          <p>LinkedIn</p>
+          <ul>
+            <li>
+              <Link> Facebook</Link>
+            </li>
+            <li>
+              <Link>Instagram</Link>
+            </li>
+            <li>
+              <Link>YouTube</Link>
+            </li>
+            <li>
+              <Link>LinkedIn</Link>
+            </li>
+          </ul>
         </div>
       </div>
-
       {/* Imortant note */}
       <p>
         *Caution: Beware of Fake Promotions or Offers. Please do not believe or
@@ -74,11 +100,28 @@ function Footer() {
         click on a link and fill in your details. All Travabay authorized email
         communications are delivered from our official domains only.
       </p>
-      <p>
-        {" "}
-        © 2026 Travabay Holidays Pvt. Ltd. All Rights Reserved. | Privacy Policy
-        | Terms & Conditions | Site Map
-      </p>
+     
+      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-300">
+        <span>© 2026 Travabay Holidays Pvt. Ltd. All Rights Reserved.</span>
+
+        <span>|</span>
+
+        <Link to="/privacy-policy" className="hover:text-yellow-400">
+          Privacy Policy
+        </Link>
+
+        <span>|</span>
+
+        <Link to="/terms-and-conditions" className="hover:text-yellow-400">
+          Terms & Conditions
+        </Link>
+
+        <span>|</span>
+
+        <Link to="/site-map" className="hover:text-yellow-400">
+          Site Map
+        </Link>
+      </div>
     </div>
   );
 }

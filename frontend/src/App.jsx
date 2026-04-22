@@ -4,6 +4,13 @@ import MainLayout from "./components/shared/MainLayout";
 import HomeScreen from "./screens/HomeScreen";
 import PackageDatailsScreen from "./screens/PackageDatailsScreen";
 
+import AboutUsScreen from "./screens/AboutUsScreen";
+import ContactScreen from "./screens/ContactScreen";
+import TermsConditonsScreen from "./screens/TermsConditonsScreen";
+import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
+import FAQScreen from "./screens/FAQScreen";
+import PackagesScreen from "./screens/PackagesScreen";
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -13,10 +20,14 @@ const appRouter = createBrowserRouter([
         index: true,
         element: <HomeScreen />,
       },
-      {
-        path: "/package/:id",
-        element: <PackageDatailsScreen />,
-      },
+      { path: "/packages", element: <PackagesScreen /> },
+      { path: "/package/:id", element: <PackageDatailsScreen /> },
+      { path: "/about-us", element: <AboutUsScreen /> },
+      { path: "/contact-us", element: <ContactScreen /> },
+      { path: "/faq", element: <FAQScreen /> },
+      { path: "/terms-and-conditions", element: <TermsConditonsScreen /> },
+      { path: "/privacy-policy", element: <PrivacyPolicyScreen /> },
+      
     ],
   },
 ]);
