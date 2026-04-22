@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 const packages = [
@@ -273,7 +274,13 @@ function PackagesScreen() {
                 <p>{pkg.highlights}</p>
               </div>
             </div>
-            <div>cards</div>
+            <div className="border border-gray-600">
+              <p>Starts from</p>
+              <h3>{pkg.price}</h3>
+              <p>{pkg.priceNote}</p>
+              <Button className="block">Reserve your spot</Button>
+              <Button>View Tour Details</Button>
+            </div>
           </div>
         ))}
       </div>
