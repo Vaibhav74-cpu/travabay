@@ -10,6 +10,7 @@ import TermsConditonsScreen from "./screens/TermsConditonsScreen";
 import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 import FAQScreen from "./screens/FAQScreen";
 import PackagesScreen from "./screens/PackagesScreen";
+import CorporateTravelScreen from "./screens/CorporateTravelScreen";
 
 const appRouter = createBrowserRouter([
   {
@@ -20,14 +21,17 @@ const appRouter = createBrowserRouter([
         index: true,
         element: <HomeScreen />,
       },
+      // Mega Navbar
+      { path: "/corporate-travel", element: <CorporateTravelScreen /> },
+      { path: "/contact-us", element: <ContactScreen /> },
+
+      
       { path: "/packages", element: <PackagesScreen /> },
       { path: "/package/:id", element: <PackageDatailsScreen /> },
       { path: "/about-us", element: <AboutUsScreen /> },
-      { path: "/contact-us", element: <ContactScreen /> },
       { path: "/faq", element: <FAQScreen /> },
       { path: "/terms-and-conditions", element: <TermsConditonsScreen /> },
       { path: "/privacy-policy", element: <PrivacyPolicyScreen /> },
-      
     ],
   },
 ]);

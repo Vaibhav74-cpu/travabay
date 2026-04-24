@@ -1,20 +1,24 @@
 import React from "react";
 import logo from "../../assets/Travabay_logo.png";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
-    <header className='flex flex-wrap'>
+    <header className="flex flex-wrap">
       <div className="w-full flex items-center justify-between bg-[#212529]">
-
         {/* Left Logo */}
         <div className="logo w-32 m-2 mx-8">
-          <img src={logo} alt="Travabay Logo" />
+          <Link to="/">
+            <img src={logo} alt="Travabay Logo" />
+          </Link>
         </div>
 
         {/* Search Bar */}
-        <div className='flex-1 max-w-xl'>
+        <div className="flex-1 max-w-xl">
           <input
-            type="text" placeholder='Search "Eiffel Tower"' className="flex w-full rounded-full px-4 h-10 text-sm"
+            type="text"
+            placeholder='Search "Eiffel Tower"'
+            className="flex w-full rounded-full px-4 h-10 text-sm"
           />
         </div>
 
