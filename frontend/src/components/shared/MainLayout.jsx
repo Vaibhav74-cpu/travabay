@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import TopNavbar from "./TopNavbar";
 import HeroBanner from "./HeroBanner";
 import JourneyCard from "./JourneyCard";
+import AsiaSection from "./AsiaSection";
 
 function MainLayout() {
   return (
@@ -13,6 +14,7 @@ function MainLayout() {
       <TopNavbar />
       <HeroBanner />
       <JourneyCard />
+      <AsiaSection />
       <main className="flex-1">
         <Outlet />
       </main>
