@@ -49,7 +49,7 @@ function JourneyCard() {
 
 
   return (
-    <section className='py-6 overflow-x-hidden'>
+    <section className='py-6'>
         <div>
             <div className='flex flex-col items-center my-8 gap-2'>
                 <h1 className='text-2xl font-bold tracking-wide'>JOURNEY IN FRAMES</h1>
