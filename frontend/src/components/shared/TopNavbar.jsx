@@ -12,20 +12,20 @@ function TopNavbar() {
   return (
     <>
         <section className='w-full bg-[#08243a] text-white'>
-            <div className='flex items-center justify-center gap-2 text-sm'>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>India <PiCaretDown onClick={showDestinations} className='inline' /></button>
+            <div className='flex items-center justify-center text-sm font-bold'>
+                <div className='p-4 hover:bg-gray-700'>
+                    <button>India <PiCaretDown onClick={showDestinations} className='inline hover:rotate-180' /></button>
                 </div>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>World <PiCaretDown className='inline' /></button>
+                <div className='p-4 hover:bg-gray-700 border-s border-gray-700'>
+                    <button>World <PiCaretDown onClick={showDestinations} className='inline hover:rotate-180' /></button>
                 </div>
-                <div className='p-4 hover:bg-gray-400'>
+                <div className='p-4 hover:bg-gray-700 border-s border-gray-700'>
                     <button>Corporate Travel</button>
                 </div>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>Forex <PiCaretDown className='inline' /></button>
+                <div className='p-4 hover:bg-gray-700 border-s border-gray-700'>
+                    <button>Forex <PiCaretDown onClick={showDestinations} className='inline hover:rotate-180' /></button>
                 </div>
-                <div className='p-4 hover:bg-gray-400'>
+                <div className='p-4 hover:bg-gray-700 border-s border-gray-700'>
                     <button>Contact Us</button>
                 </div>
             </div>
