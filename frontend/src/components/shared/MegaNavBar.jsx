@@ -1,336 +1,116 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
-import React, { useState } from "react";
-
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { ChevronDown, ChevronUp, ChevronRight } from "lucide-react";
+import DestinationColumn from "./DestinationColumn";
+import { useLocation, useNavigate } from "react-router-dom";
+import TopNavbar from "./TopNavbar";
+import {
+  indiaCategories,
+  indiaDataCol1,
+  indiaDataCol2,
+  indiaDataCol3,
+  indiaTabs,
+  worldCategories,
+  worldDataCol1,
+  worldDataCol2,
+  worldDataCol3,
+  worldTabs,
+} from "@/data/data";
 
 function MegaNavbar() {
-  const [toggle, setToggle] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const showDestinations = () => {
-    console.log("Arrow has been clicked");
-    setToggle(true);
-  };
+  const [menuOpen, setMenuOpen] = useState(null); // India | World | Forex
+  const [activeSubTab, setActiveSubTab] = useState(
+    "Top Recommended Destinations",
+  );
 
-  const regions = [
-    "North India",
-    "South India",
-    "East & North East India",
-    "Rajasthan, West & Central India",
-  ];
+  const leftCategories =
+    menuOpen === "World" ? worldCategories : indiaCategories;
+
+  const subTabs = menuOpen === "World" ? worldTabs : indiaTabs;
+
+  const destinationData = menuOpen === "World" ? worldDataCol1 : indiaDataCol1;
+
+  const destinationDataCol2 =
+    menuOpen === "World" ? worldDataCol2 : indiaDataCol2;
+
+  const destinationDataCol3 =
+    menuOpen === "World" ? worldDataCol3 : indiaDataCol3;
 
   return (
-    <>
-      <section className="w-full bg-[#08243a] text-white">
-        <nav className="flex max-w-7xl mx-auto px-6 py-3 gap-5 justify-center">
-          <div>
-            {/* India Navbar Item */}
-            <div
-              className="relative flex items-center gap-1 cursor-pointer hover:text-yellow-400 transition"
-              onMouseEnter={() => setShowMenu(true)}
-              onMouseLeave={() => setShowMenu(false)}
-            >
-              India
-              <ChevronDown size={20} />
+    <div className="relative font-sans antialiased">
+      {/* ── Top Navigation Bar ── */}
+
+      <TopNavbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+
+      {/* ── Mega Menu Dropdown ── */}
+
+      {/* Mega Menu */}
+      {menuOpen && (
+        <div className="absolute left-0 border border-t-0 border-gray-200 shadow-xl bg-white ml-72 mr-8">
+          <div className="flex">
+            {/* Left Sidebar */}
+            <div className="w-[280px] border-r border-gray-200 py-3">
+              {leftCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className={`
+                    w-full flex items-center justify-between
+                    px-5 py-3 text-left text-[14px]
+                    ${
+                      cat.active
+                        ? "bg-[#d6eaf8] text-[#1a6db5] font-semibold"
+                        : "text-[#333] hover:bg-gray-50"
+                    }
+                  `}
+                >
+                  {cat.label}
+                  <ChevronRight size={15} />
+                </button>
+              ))}
             </div>
 
-            {/* Mega Menu */}
-            {showMenu && (
-              <div
-                className="absolute  top-full mt-2 w-[1000px]  bg-white shadow-xl rounded-md p-6 z-50 text-black"
-                onMouseEnter={() => setShowMenu(true)}
-                onMouseLeave={() => setShowMenu(false)}
-              >
-                <div className="flex">
-                  {/* Left Sidebar */}
-
-                  {regions.map((region) => (
-                    <>
-                      <div className="w-[220px] border-r pr-4 space-y-3">
-                        <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                          <span>{region}</span>
-                          <ChevronRight size={16} />
-                        </div>
-                      </div>
-                    </>
-                  ))}
-
-                  {/* Right Content */}
-                  <div className="flex-1 pl-6">
-                    {/* Top Tabs */}
-                    <div className="flex gap-8 border-b pb-3 text-sm font-medium text-gray-600">
-                      <span className="cursor-pointer">
-                        Top Recommended Destinations
-                      </span>
-                      <span className="cursor-pointer">Rajasthan</span>
-                      <span className="cursor-pointer">Kerala</span>
-                      <span className="cursor-pointer">
-                        Andaman and Nicobar
-                      </span>
-                      <span className="cursor-pointer">North East</span>
-                    </div>
-
-                    {/* Destination Columns */}
-                    <div className="grid grid-cols-3 gap-10 mt-6 text-sm">
-                      <div>
-                        <h3 className="font-bold mb-3">Goa</h3>
-
-                        <h3 className="font-bold mb-2">Gujarat</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Ahmedabad</li>
-                          <li>Bhuj</li>
-                          <li>Dwarka</li>
-                          <li>Gir</li>
-                          <li>Patan</li>
-                          <li>Kevadiya</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold mb-2">Madhya Pradesh</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Bhopal</li>
-                          <li>Gwalior</li>
-                          <li>Indore</li>
-                          <li>Jabalpur</li>
-                          <li>Khajuraho</li>
-                          <li>Maheshwar</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold mb-2">Rajasthan</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Jaipur</li>
-                          <li>Jaisalmer</li>
-                          <li>Jodhpur</li>
-                          <li>Mount Abu</li>
-                          <li>Pushkar</li>
-                          <li>Udaipur</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Right Panel */}
+            <div className="flex-1">
+              {/* Sub Tabs */}
+              <div className="flex border-b border-gray-200 px-6">
+                {subTabs.map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveSubTab(tab)}
+                    className={`
+                      mr-6 py-4 text-sm font-medium border-b-2
+                      ${
+                        activeSubTab === tab
+                          ? "border-[#1a6db5] text-[#1a6db5]"
+                          : "border-transparent text-gray-600"
+                      }
+                    `}
+                  >
+                    {tab}
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
 
-          {/* World */}
-          <div className="relative">
-            {/* India Navbar Item */}
-            <div
-              className="flex items-center gap-1 cursor-pointer hover:text-yellow-400 transition"
-              onMouseEnter={() => setShowMenu(true)}
-              onMouseLeave={() => setShowMenu(false)}
-            >
-              World
-              <ChevronDown size={20} />
+              {/* Destination Columns */}
+              <div className="grid grid-cols-3 gap-8 px-8 py-6">
+                <DestinationColumn groups={destinationData} />
+                <DestinationColumn groups={destinationDataCol2} />
+                <DestinationColumn groups={destinationDataCol3} />
+              </div>
             </div>
-
-            {/* Mega Menu */}
-            {showMenu && (
-              <div
-                className="absolute left-0 top-full mt-2 w-[1000px] bg-white shadow-xl rounded-md p-6 z-50 text-black"
-                onMouseEnter={() => setShowMenu(true)}
-                onMouseLeave={() => setShowMenu(false)}
-              >
-                <div className="flex">
-                  {/* Left Sidebar */}
-                  <div className="w-[220px] border-r pr-4 space-y-3">
-                    <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                      <span>North India</span>
-                      <ChevronRight size={16} />
-                    </div>
-
-                    <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                      <span>South India</span>
-                      <ChevronRight size={16} />
-                    </div>
-
-                    <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                      <span>East & North East India</span>
-                      <ChevronRight size={16} />
-                    </div>
-
-                    <div className="flex justify-between items-center bg-blue-100 text-blue-600 p-3 rounded cursor-pointer">
-                      <span>Rajasthan, West & Central India</span>
-                      <ChevronRight size={16} />
-                    </div>
-                  </div>
-
-                  {/* Right Content */}
-                  <div className="flex-1 pl-6">
-                    {/* Top Tabs */}
-                    <div className="flex gap-8 border-b pb-3 text-sm font-medium text-gray-600">
-                      <span className="cursor-pointer">
-                        Top Recommended Destinations
-                      </span>
-                      <span className="cursor-pointer">Rajasthan</span>
-                      <span className="cursor-pointer">Kerala</span>
-                      <span className="cursor-pointer">
-                        Andaman and Nicobar
-                      </span>
-                      <span className="cursor-pointer">North East</span>
-                    </div>
-
-                    {/* Destination Columns */}
-                    <div className="grid grid-cols-3 gap-10 mt-6 text-sm">
-                      <div>
-                        <h3 className="font-bold mb-3">Goa</h3>
-
-                        <h3 className="font-bold mb-2">Gujarat</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Ahmedabad</li>
-                          <li>Bhuj</li>
-                          <li>Dwarka</li>
-                          <li>Gir</li>
-                          <li>Patan</li>
-                          <li>Kevadiya</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold mb-2">Madhya Pradesh</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Bhopal</li>
-                          <li>Gwalior</li>
-                          <li>Indore</li>
-                          <li>Jabalpur</li>
-                          <li>Khajuraho</li>
-                          <li>Maheshwar</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold mb-2">Rajasthan</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Jaipur</li>
-                          <li>Jaisalmer</li>
-                          <li>Jodhpur</li>
-                          <li>Mount Abu</li>
-                          <li>Pushkar</li>
-                          <li>Udaipur</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
-          <div>
-            <Link to="/corporate-travel">Corporate Travel</Link>
-          </div>
+        </div>
+      )}
 
-          {/* forex */}
-          <div className="relative">
-            {/* India Navbar Item */}
-            <div
-              className="flex items-center gap-1 cursor-pointer hover:text-yellow-400 transition"
-              onMouseEnter={() => setShowMenu(true)}
-              onMouseLeave={() => setShowMenu(false)}
-            >
-              Forex
-              <ChevronDown size={20} />
+      {menuOpen === "Forex" && (
+        <div className="absolute left-0 top-full w-full z-[9999]">
+          <div className="max-w-[1400px] mx-auto px-4">
+            <div className="bg-white border border-t-0 border-gray-200 shadow-xl rounded-b-md h-[350px]">
+              ayush
             </div>
-
-            {/* Mega Menu */}
-            {showMenu && (
-              <div
-                className="absolute left-0 top-full mt-2 w-[1000px] bg-white shadow-xl rounded-md p-6 z-50 text-black"
-                onMouseEnter={() => setShowMenu(true)}
-                onMouseLeave={() => setShowMenu(false)}
-              >
-                <div className="flex">
-                  {/* Left Sidebar */}
-                  <div className="w-[220px] border-r pr-4 space-y-3">
-                    <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                      <span>North India</span>
-                      <ChevronRight size={16} />
-                    </div>
-
-                    <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                      <span>South India</span>
-                      <ChevronRight size={16} />
-                    </div>
-
-                    <div className="flex justify-between items-center cursor-pointer hover:bg-blue-100 p-3 rounded">
-                      <span>East & North East India</span>
-                      <ChevronRight size={16} />
-                    </div>
-
-                    <div className="flex justify-between items-center bg-blue-100 text-blue-600 p-3 rounded cursor-pointer">
-                      <span>Rajasthan, West & Central India</span>
-                      <ChevronRight size={16} />
-                    </div>
-                  </div>
-
-                  {/* Right Content */}
-                  <div className="flex-1 pl-6">
-                    {/* Top Tabs */}
-                    <div className="flex gap-8 border-b pb-3 text-sm font-medium text-gray-600">
-                      <span className="cursor-pointer">
-                        Top Recommended Destinations
-                      </span>
-                      <span className="cursor-pointer">Rajasthan</span>
-                      <span className="cursor-pointer">Kerala</span>
-                      <span className="cursor-pointer">
-                        Andaman and Nicobar
-                      </span>
-                      <span className="cursor-pointer">North East</span>
-                    </div>
-
-                    {/* Destination Columns */}
-                    <div className="grid grid-cols-3 gap-10 mt-6 text-sm">
-                      <div>
-                        <h3 className="font-bold mb-3">Goa</h3>
-
-                        <h3 className="font-bold mb-2">Gujarat</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Ahmedabad</li>
-                          <li>Bhuj</li>
-                          <li>Dwarka</li>
-                          <li>Gir</li>
-                          <li>Patan</li>
-                          <li>Kevadiya</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold mb-2">Madhya Pradesh</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Bhopal</li>
-                          <li>Gwalior</li>
-                          <li>Indore</li>
-                          <li>Jabalpur</li>
-                          <li>Khajuraho</li>
-                          <li>Maheshwar</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold mb-2">Rajasthan</h3>
-                        <ul className="space-y-2 text-gray-600">
-                          <li>Jaipur</li>
-                          <li>Jaisalmer</li>
-                          <li>Jodhpur</li>
-                          <li>Mount Abu</li>
-                          <li>Pushkar</li>
-                          <li>Udaipur</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
-          <div>
-            <Link to="/contact-us">Contact Us</Link>
-          </div>
-        </nav>
-      </section>
-    </>
+        </div>
+      )}
+    </div>
   );
 }
 

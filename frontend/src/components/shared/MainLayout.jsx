@@ -6,7 +6,7 @@ import MegaNavbar from "./MegaNavBar";
 
 function MainLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <NavBar />
       <MegaNavbar />
       <main className="flex-1">
