@@ -1,37 +1,101 @@
-import React, { useState } from 'react'
-import { PiCaretDown } from "react-icons/pi";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-function TopNavbar() {
-    const[toggle, setToggle] = useState(false);
+export default function TopNavbar({ menuOpen,
+  setMenuOpen}) {
+  const navigate = useNavigate();
+//   const [menuOpen, setMenuOpen] = useState(null);
 
-    const showDestinations = () => {
-        console.log("Arrow has been clicked");
-        setToggle(true);
+  const toggleMenu = (menuName) => {
+    setMenuOpen((prev) => (prev === menuName ? null : menuName));
+  };
+
+  const handleRoute = (path) => {
+    setMenuOpen(null); // close dropdown when navigating
+    navigate(path);
+  };
+
+  const navButtonClass = (menuName) => `
+    flex items-center gap-1 px-6 h-[60px]
+    text-[15px] font-semibold tracking-wide
+    border-b-[3px] transition-all duration-200
+    ${
+      menuOpen === menuName
+        ? "border-[#f5a623] text-white"
+        : "border-transparent text-gray-300 hover:text-white"
     }
+  `;
 
   return (
-    <>
-        <section className='w-full bg-[#08243a] text-white'>
-            <div className='flex items-center justify-center gap-2 text-sm'>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>India <PiCaretDown onClick={showDestinations} className='inline' /></button>
-                </div>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>World <PiCaretDown className='inline' /></button>
-                </div>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>Corporate Travel</button>
-                </div>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>Forex <PiCaretDown className='inline' /></button>
-                </div>
-                <div className='p-4 hover:bg-gray-400'>
-                    <button>Contact Us</button>
-                </div>
-            </div>
-        </section>
-    </>
-  )
-}
+    <nav className="w-full bg-[#142033] text-white shadow-md relative z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-center h-[60px]">
+        
+        {/* India */}
+        <button
+          onClick={() => toggleMenu("India")}
+          className={navButtonClass("India")}
+        >
+          India
+          {menuOpen === "India" ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </button>
 
-export default TopNavbar
+        {/* World */}
+        <button
+          onClick={() => toggleMenu("World")}
+          className={navButtonClass("World")}
+        >
+          World
+          {menuOpen === "World" ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </button>
+
+        {/* Corporate Travel */}
+        <button
+          onClick={() => handleRoute("/corporate-travel")}
+          className="
+            flex items-center px-6 h-[60px]
+            text-[15px] font-semibold tracking-wide
+            border-b-[3px] border-transparent
+            text-gray-300 hover:text-white transition-all
+          "
+        >
+          Corporate Travel
+        </button>
+
+        {/* Forex */}
+        <button
+          onClick={() => toggleMenu("Forex")}
+          className={navButtonClass("Forex")}
+        >
+          Forex
+          {menuOpen === "Forex" ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )}
+        </button>
+
+        {/* Contact Us */}
+        <button
+          onClick={() => handleRoute("/contact-us")}
+          className="
+            flex items-center px-6 h-[60px]
+            text-[15px] font-semibold tracking-wide
+            border-b-[3px] border-transparent
+            text-gray-300 hover:text-white transition-all
+          "
+        >
+          Contact Us
+        </button>
+      </div>
+    </nav>
+  );
+}

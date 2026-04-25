@@ -21,7 +21,8 @@ function HomeScreen() {
     <>
       <HeroBanner />
       <JourneyCard />
-      <AsiaSection />
+      {/* <PackagesCalousal />
+      <Card /> */}
     </>
   );
 }

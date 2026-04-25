@@ -17,7 +17,7 @@ import Journey14 from '../../assets/Journey-14.png';
 
 function JourneyCard() {
   return (
-    <section className='py-6'>
+    <section className='py-6 overflow-x-hidden'>
         <div>
             <div className='flex flex-col items-center my-8 gap-2'>
                 <h1 className='text-2xl font-bold tracking-wide'>JOURNEY IN FRAMES</h1>
