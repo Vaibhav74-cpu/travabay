@@ -3,15 +3,15 @@ import { Button } from "@/components/ui/button";
 import Rating from "./Rating";
 import { Link } from "react-router-dom";
 
-function Package({ packages }) {
+function Package({ pkg }) {
   return (
     <div className="w-[80%]">
-      {packages.map((pkg) => (
-        <div className="bg-white rounded-xl shadow p-4 flex gap-4">
+     
+        <div key={pkg._id} className="bg-white rounded-xl shadow p-4 flex gap-4">
           <div className="w-[220px] h-[150px] object-cover overflow-hidden">
-            <Link to={`/package/${pkg.id}`}>
+            <Link to={`/package/${pkg._id}`}>
               <img
-                src={pkg.image}
+                src={pkg?.image}
                 alt={pkg.title}
                 className="w-full h-full object-cover"
               />
@@ -20,7 +20,7 @@ function Package({ packages }) {
           <div>
             <h1>{pkg.title}</h1>
             <div className="flex gap-3 ">
-              {pkg.tags.map((tag, index) => (
+              {pkg.tags?.map((tag, index) => (
                 <span key={index} className=" bg-red-400 rounded-lg p-1">
                   {tag.toUpperCase()}
                 </span>
@@ -59,7 +59,7 @@ function Package({ packages }) {
             <Button>View Tour Details</Button>
           </div>
         </div>
-      ))}
+     
     </div>
   );
 }

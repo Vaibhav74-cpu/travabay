@@ -8,15 +8,7 @@ import JourneyCard from "@/components/shared/JourneyCard";
 import AsiaSection from "@/components/shared/AsiaSection";
 
 function HomeScreen() {
-  // const [packages, setPackages] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchPackages = async () => {
-  //     const { data } = await axios.get("http://localhost:5000/api/packages");
-  //     setPackages(data);
-  //   };
-  //   fetchPackages();
-  // }, []);
+  
   return (
     <>
       <HeroBanner />
