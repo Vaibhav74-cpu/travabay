@@ -3,16 +3,18 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 dotenv.config();
-// import connectDB from "./config/db.js";
+import connectDB from "./config/db.js";
+
 
 import cookieParser from "cookie-parser";
 import tourPackages from "./data/packages.js";
 
 const app = express();
+await connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use(
   cors({
@@ -33,6 +35,12 @@ app.get("/api/package/:id", (req, res) => {
   const pkg = tourPackages.find((pkg) => pkg.id === req.params.id);
   res.json(pkg);
 });
+
+
+
+//ROUTES
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`server running on server localhost:${PORT}`);
