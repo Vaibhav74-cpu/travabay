@@ -1,5 +1,3 @@
-import React from "react";
-import packages from "../packages";
 import {
   Select,
   SelectContent,
@@ -11,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import Package from "@/components/shared/Package";
 import { Button } from "@/components/ui/button";
+import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
 
 const tags = [
   "All Tags",
@@ -38,6 +37,8 @@ const tags = [
 ];
 
 function PackagesScreen() {
+  const { data: packages, isError, isLoading } = useGetPackagesQuery();
+
   return (
     <div>
       <div className="flex gap-12 justify-evenly">
@@ -124,7 +125,21 @@ function PackagesScreen() {
         </div>
 
         {/* Right */}
-        <Package packages={packages} />
+        <div>
+          {isLoading ? (
+            <h2>Loading</h2>
+          ) : isError ? (
+            <h3>Error</h3>
+          ) : (
+            <>
+              {packages.map((pkg) => (
+                <div key={pkg._id}>
+                  <Package pkg={pkg} />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

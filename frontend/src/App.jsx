@@ -11,6 +11,10 @@ import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 import FAQScreen from "./screens/FAQScreen";
 import PackagesScreen from "./screens/PackagesScreen";
 import CorporateTravelScreen from "./screens/CorporateTravelScreen";
+import Login from "./components/shared/Login";
+import LoginScreen from "./screens/admin/LoginScreen";
+import VerifyOtpScreen from "./screens/admin/VerifyOtpScreen";
+import AdminDashboard from "./screens/admin/AdminDashboard";
 
 const appRouter = createBrowserRouter([
   {
@@ -25,15 +29,21 @@ const appRouter = createBrowserRouter([
       { path: "/corporate-travel", element: <CorporateTravelScreen /> },
       { path: "/contact-us", element: <ContactScreen /> },
 
-      
       { path: "/packages", element: <PackagesScreen /> },
       { path: "/package/:id", element: <PackageDatailsScreen /> },
       { path: "/about-us", element: <AboutUsScreen /> },
       { path: "/faq", element: <FAQScreen /> },
       { path: "/terms-and-conditions", element: <TermsConditonsScreen /> },
       { path: "/privacy-policy", element: <PrivacyPolicyScreen /> },
+
+      //admin
+
+      ,
     ],
   },
+  { path: "/admin/login", element: <LoginScreen /> },
+  { path: "/admin/verify-email", element: <VerifyOtpScreen /> },
+  { path: "/admin/dashboard", element: <AdminDashboard /> },
 ]);
 function App() {
   return <RouterProvider router={appRouter}></RouterProvider>;
