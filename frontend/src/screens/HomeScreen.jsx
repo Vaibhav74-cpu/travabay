@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 // import axios from "axios";
 import HeroBanner from "@/components/shared/HeroBanner";
 import JourneyCard from "@/components/shared/JourneyCard";
-import AsiaSection from "@/components/shared/AsiaSection";
+import PackagesCarousal from "@/components/shared/PackagesCarousal";
 
 function HomeScreen() {
   
@@ -13,8 +13,8 @@ function HomeScreen() {
     <>
       <HeroBanner />
       <JourneyCard />
-      {/* <PackagesCalousal />
-      <Card /> */}
+       <PackagesCarousal />
+      {/* <Card /> */}
     </>
   );
 }
