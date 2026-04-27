@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 import connectDB from "./config/db.js";
 import packageRoute from "./routes/packageRoute.js";
+import adminRoutes from './routes/adminRoutes.js'
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -13,7 +14,7 @@ await connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -27,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/packages", packageRoute);
-// app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
 // app.use("/api/enquiry", enquiryRoutes);
 
 //ROUTES

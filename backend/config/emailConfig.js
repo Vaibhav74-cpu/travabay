@@ -22,7 +22,7 @@ export const sendOtpEmail = async (user, otpCode) => {
       subject: "Email Verification OTP",
       html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">Hello ${user.name}!</h2>
+          <h2 style="color: #333;">Hello Admin</h2>
           <p style="font-size: 16px;">Your verification code is:</p>
           <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px;">
             ${otpCode}

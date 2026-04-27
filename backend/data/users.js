@@ -7,11 +7,11 @@ const users = [
   },
   {
     email: "raju@gmail.com",
-    isAdmin: false,
+    isAdmin: true,
   },
   {
     email: "ayush@gmail.com",
-    isAdmin: false,
+    isAdmin: true,
   },
 ];
 
