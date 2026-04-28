@@ -27,8 +27,8 @@ app.get("/", (req, res) => {
   res.send("api is running");
 });
 
-app.use("/api/packages", packageRoute);
 app.use("/api/admin", adminRoutes);
+app.use("/api/packages", packageRoute);
 // app.use("/api/enquiry", enquiryRoutes);
 
 //ROUTES

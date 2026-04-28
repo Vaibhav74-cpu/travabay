@@ -87,7 +87,7 @@ export const verifyEmailOtp = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,  
-    id: admin._id,
+    adminId: admin._id,
     email: admin.email,
     isAdmin: admin.isAdmin,
     message: "Email verified successfully",

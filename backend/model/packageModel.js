@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const packageSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Admin",
+    },
     title: {
       type: String,
       required: true,
