@@ -45,11 +45,11 @@ const enquirySchema = new mongoose.Schema(
       trim: true,
     },
 
-    // status: {
-    //   type: String,
-    //   enum: ["pending", "contacted", "closed"],
-    //   default: "pending",
-    // },
+    status: {
+      type: String,
+      enum: ["pending", "done"],
+      default: "pending",
+    },
   },
   {
     timestamps: true,

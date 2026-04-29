@@ -5,8 +5,15 @@ import Enquiry from "../model/enquiryModel.js";
 // route-> /api/user/enquiery
 //access-> public
 export const sendEnquiry = asyncHandler(async (req, res) => {
-  const { name, email, countryCode, phoneNumber, destination, travellers, travelDetails } =
-    req.body;
+  const {
+    name,
+    email,
+    countryCode,
+    phoneNumber,
+    destination,
+    travellers,
+    travelDetails,
+  } = req.body;
 
   // Validation
   if (!name || !email || !phoneNumber || !destination || !travellers) {
@@ -33,6 +40,43 @@ export const sendEnquiry = asyncHandler(async (req, res) => {
     enquiry: createdEnquiry,
   });
 });
+
+//@desc   get all enquiries
+//@routes  delete /api/enquiies
+//@access  /private/admin
+export const getEnquiries = asyncHandler(async (req, res) => {
+  const enquiries = await Enquiry.find({}).sort({ createdAt: -1 });
+
+  res.status(200).json({
+    success: true,
+    count: enquiries.length,
+    enquiries,
+  });
+});
+
+
+//@desc   mark as done enquiry
+//@routes  delete /api/enquiry/:id/done
+//@access  /private/admin
+export const markEnquiryDone = asyncHandler(async (req, res) => {
+  const enquiry = await Enquiry.findById(req.params.id);
+
+  if (!enquiry) {
+    res.status(404);
+    throw new Error("Enquiry not found");
+  }
+
+  enquiry.status = "done";
+
+  const updatedEnquiry = await enquiry.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Enquiry marked as done",
+    enquiry: updatedEnquiry,
+  });
+});
+
 
 //@desc    delete enquiery
 //@routes  delete /api/admin/:id
