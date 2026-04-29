@@ -14,7 +14,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
 
     logout: builder.mutation({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: `${ADMIN_URL}/logout`,
         method: "POST",
       }),
     }),

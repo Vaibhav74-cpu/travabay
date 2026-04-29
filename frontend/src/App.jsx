@@ -15,6 +15,8 @@ import Login from "./components/shared/Login";
 import LoginScreen from "./screens/admin/LoginScreen";
 import VerifyOtpScreen from "./screens/admin/VerifyOtpScreen";
 import AdminDashboard from "./screens/admin/AdminDashboard";
+import PackageListScreen from "./screens/admin/PackageListScreen";
+import EnquirysScreen from "./screens/admin/EnquirysScreen";
 
 const appRouter = createBrowserRouter([
   {
@@ -44,6 +46,8 @@ const appRouter = createBrowserRouter([
   { path: "/admin/login", element: <LoginScreen /> },
   { path: "/admin/verify-email", element: <VerifyOtpScreen /> },
   { path: "/admin/dashboard", element: <AdminDashboard /> },
+  { path: "/admin/packages", element: <PackageListScreen /> },
+  { path: "/admin/enquiries", element: <EnquirysScreen /> },
 ]);
 function App() {
   return <RouterProvider router={appRouter}></RouterProvider>;
