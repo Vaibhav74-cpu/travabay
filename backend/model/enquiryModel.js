@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const enquirySchema = new mongoose.Schema(
   {
-    fullName: {
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -27,13 +27,13 @@ const enquirySchema = new mongoose.Schema(
       trim: true,
     },
 
-    preferredDestination: {
+    destination: {
       type: String,
       required: true,
       trim: true,
     },
 
-    numberOfTravellers: {
+    travellers: {
       type: Number,
       required: true,
       min: 1,
@@ -45,11 +45,11 @@ const enquirySchema = new mongoose.Schema(
       trim: true,
     },
 
-    status: {
-      type: String,
-      enum: ["pending", "contacted", "closed"],
-      default: "pending",
-    },
+    // status: {
+    //   type: String,
+    //   enum: ["pending", "contacted", "closed"],
+    //   default: "pending",
+    // },
   },
   {
     timestamps: true,

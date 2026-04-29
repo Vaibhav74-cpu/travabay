@@ -6,7 +6,8 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 import connectDB from "./config/db.js";
 import packageRoute from "./routes/packageRoute.js";
-import adminRoutes from './routes/adminRoutes.js'
+import adminRoutes from "./routes/adminRoutes.js";
+import enquiryRoutes from "./routes/enquiryRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/admin", adminRoutes);
+app.use("/api/enquiry", enquiryRoutes);
 app.use("/api/packages", packageRoute);
 // app.use("/api/enquiry", enquiryRoutes);
 

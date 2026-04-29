@@ -130,9 +130,16 @@ export const updatePackage = asyncHandler(async (req, res) => {
   } = req.body;
   const image = req.file;
 
+  // console.log("image", image);
+
   const pkg = await Package.findById(req.params.id);
+  if (!pkg) {
+    res.status(404);
+    throw new Error("Package not found");
+  }
 
   const imageUri = getDataUri(image);
+
   const cloudResponse = await cloudinary.uploader.upload(
     imageUri.content,
     // {
@@ -155,7 +162,12 @@ export const updatePackage = asyncHandler(async (req, res) => {
     pkg.priceNote = priceNote;
     pkg.image = cloudResponse.secure_url || image;
     const updatedPackage = await pkg.save();
-    res.status(201).json(updatedPackage); //send to the frontend
+
+    res.status(200).json({
+      success: true,
+      message: "Package updated successfully",
+      package: updatedPackage,
+    });
   } else {
     res.status(404);
     throw new Error("Package not found");

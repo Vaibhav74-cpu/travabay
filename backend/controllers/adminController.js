@@ -93,3 +93,5 @@ export const verifyEmailOtp = asyncHandler(async (req, res) => {
     message: "Email verified successfully",
   });
 });
+
+
