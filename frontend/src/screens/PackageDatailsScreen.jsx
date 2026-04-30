@@ -1,6 +1,6 @@
 import Loader from "@/components/shared/Loader";
 import Message from "@/components/shared/Message";
-import { useGetPackageDetailsQuery } from "@/redux/slices/packageApiSlice";
+import { useGetPackageByIdQuery } from "@/redux/slices/packageApiSlice";
 
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -11,7 +11,7 @@ function PackageDatailsScreen() {
     data: pkg,
     isLoading,
     isError,
-  } = useGetPackageDetailsQuery(packageId);
+  } = useGetPackageByIdQuery(packageId);
 
   console.log(pkg);
 

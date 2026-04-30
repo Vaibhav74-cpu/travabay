@@ -4,7 +4,7 @@ import { apiSlice } from "./apiSlice";
 export const packagesApislice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     //ADMIN CREATE NEW PACKAGE
-    createPackage: builder.query({
+    createPackage: builder.mutation({
       query: () => ({
         url: PACKAGE_URL,
       }),
@@ -22,7 +22,7 @@ export const packagesApislice = apiSlice.injectEndpoints({
     }),
 
     //PUBLIC -  USER AND ADMIN  GET PACKAGE DETAILS
-    getPackageDetails: builder.query({
+    getPackageById: builder.query({
       query: (packageId) => ({
         url: `${PACKAGE_URL}/${packageId}`,
       }),
@@ -30,7 +30,7 @@ export const packagesApislice = apiSlice.injectEndpoints({
     }),
 
     //ADMIN UPDATE PACKAGE DETAILS
-    updatePackage: builder.query({
+    updatePackage: builder.mutation({
       query: ({ packageId, formData }) => ({
         url: `${PACKAGE_URL}/${packageId}`,
         method: "PUT",
@@ -50,10 +50,10 @@ export const packagesApislice = apiSlice.injectEndpoints({
   }),
 });
 export const {
-  useCreatePackageQuery,
+  useGetPackageByIdQuery,
   useGetPackagesQuery,
-  useGetPackageDetailsQuery,
-  useUpdatePackageQuery,
+  useCreatePackageMutation,
+  useUpdatePackageMutation,
   useDeletePackageMutation,
 } = packagesApislice;
 
