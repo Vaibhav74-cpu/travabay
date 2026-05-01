@@ -30,7 +30,7 @@ export const bookingApislice = apiSlice.injectEndpoints({
     }),
 
     //ADMIN DELETE BOOKING
-    deleteBooking: builder.query({
+    deleteBooking: builder.mutation({
       query: (bookingId) => ({
         url: `${BOOKING_URL}/${bookingId}`,
         method: "DELETE",
@@ -38,10 +38,11 @@ export const bookingApislice = apiSlice.injectEndpoints({
     }),
 
     //ADMIN MARK BOOKING STATUS [CONFIRMED , CANCEL]
-    updatBookingStatus: builder.query({
-      query: (bookingId) => ({
+    updatBookingStatus: builder.mutation({
+      query: ({ bookingId, status }) => ({
         url: `${BOOKING_URL}/${bookingId}/status`,
         method: "PUT",
+        body: { status },
       }),
     }),
   }),
@@ -50,8 +51,8 @@ export const {
   useCreateBookingMutation,
   useGetBookingDetailsQuery,
   useGetBookingsQuery,
-  useDeleteBookingQuery,
-  useUpdatBookingStatusQuery,
+  useDeleteBookingMutation,
+  useUpdatBookingStatusMutation,
 } = bookingApislice;
 
 // keepUnusedDataFor-> keep data for 5 seconds after page leave

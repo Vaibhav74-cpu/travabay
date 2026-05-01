@@ -17,6 +17,7 @@ import {
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { FaStar } from "react-icons/fa6";
 
 function PackageListScreen() {
   const navigate = useNavigate();
@@ -61,9 +62,7 @@ function PackageListScreen() {
         </div>
         <div className="mt-6 bg-white shadow rounded-xl p-4 overflow-x-auto">
           <Table>
-            <TableCaption>
-              A list of <span className="text-blue-400">Packages</span>
-            </TableCaption>
+            <TableCaption>A list of Packages</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Image</TableHead>
@@ -96,7 +95,12 @@ function PackageListScreen() {
                   <TableCell>₹{pkg.price}</TableCell>
 
                   {/* RATING */}
-                  <TableCell>{pkg.rating} ⭐</TableCell>
+
+                  <TableCell>
+                    <div className="flex gap-2">
+                      {pkg.rating} <FaStar size={20} color="yellow" />
+                    </div>
+                  </TableCell>
 
                   {/* STATUS */}
                   <TableCell>

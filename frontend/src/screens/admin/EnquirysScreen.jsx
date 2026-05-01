@@ -61,13 +61,13 @@ function EnquirysScreen() {
             <TableCaption>A list of Enquiries</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead>NAME</TableHead>
-                <TableHead>EMAIL</TableHead>
-                <TableHead>PHONE NUMBER</TableHead>
-                <TableHead>DESTINATION</TableHead>
-                <TableHead>TRAVELLERS</TableHead>
-                <TableHead>TRAVEL DETAILS</TableHead>
-                <TableHead>STATUS</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone Number</TableHead>
+                <TableHead>Destination</TableHead>
+                <TableHead>Travellers</TableHead>
+                <TableHead>Travel Details</TableHead>
+                <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
