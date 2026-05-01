@@ -19,6 +19,7 @@ import PackageListScreen from "./screens/admin/PackageListScreen";
 import EnquirysScreen from "./screens/admin/EnquirysScreen";
 import BookingScreen from "./screens/admin/BookingScreen";
 import PackageEditScreen from "./screens/admin/PackageEditScreen";
+import PackageCreateScreen from "./screens/admin/PackageCreateScreen";
 
 const appRouter = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const appRouter = createBrowserRouter([
   { path: "/admin/login", element: <LoginScreen /> },
   { path: "/admin/verify-email", element: <VerifyOtpScreen /> },
   // { path: "/admin/dashboard", element: <AdminDashboard /> },
+  { path: "/admin/package/create", element: <PackageCreateScreen /> },
   { path: "/admin/packages", element: <PackageListScreen /> },
   { path: "/admin/enquiries", element: <EnquirysScreen /> },
   { path: "/admin/bookings", element: <BookingScreen /> },

@@ -1,4 +1,7 @@
-import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
+import {
+  useDeletePackageMutation,
+  useGetPackagesQuery,
+} from "@/redux/slices/packageApiSlice";
 import React from "react";
 import AdminDashboard from "./AdminDashboard";
 import { Button } from "@/components/ui/button";
@@ -13,21 +16,34 @@ import {
 } from "@/components/ui/table";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function PackageListScreen() {
   const navigate = useNavigate();
-  const { data: packages, isLoading, isError } = useGetPackagesQuery();
-  console.log(packages);
+  const { data: packages, isLoading, isError, refetch } = useGetPackagesQuery();
+  const [deletePkg] = useDeletePackageMutation();
+  // console.log(packages);
 
   const packageEdit = (id) => {
     if (!id) {
-      console.error("Invalid package ID");
+      toast("Invalid package ID", { position: "top-center" });
       return;
     }
 
     navigate(`/admin/package/${id}/edit`);
   };
 
+  const deletePackageHandler = async (id) => {
+    if (window.confirm("Are you sure want to delete this Package")) {
+      try {
+        const res = await deletePkg(id);
+        refetch();
+        toast.success(res?.message || res?.data?.message, {});
+      } catch (error) {
+        toast.error(error?.data?.message || error?.message);
+      }
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminDashboard />
@@ -35,7 +51,10 @@ function PackageListScreen() {
         <div className="flex flex-col sm:flex-row justify-between items-center  gap-4">
           <h2 className="font-bold text-2xl text-gray-800">PACKAGES</h2>
           <div className="bg-slate-400 p mr-14 border rounded-lg">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+            <Button
+              onClick={() => navigate("/admin/package/create")}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+            >
               CREATE PACKAGE
             </Button>
           </div>
@@ -103,7 +122,7 @@ function PackageListScreen() {
 
                       {/* Delete */}
                       <button
-                        onClick={() => handleDelete(pkg._id)}
+                        onClick={() => deletePackageHandler(pkg._id)}
                         className="text-red-500 hover:text-red-700 text-lg"
                       >
                         <FaTrash />

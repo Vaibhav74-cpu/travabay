@@ -5,11 +5,12 @@ export const packagesApislice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     //ADMIN CREATE NEW PACKAGE
     createPackage: builder.mutation({
-      query: () => ({
-        url: PACKAGE_URL,
+      query: (formData) => ({
+        url: `${PACKAGE_URL}/add`,
+        method: "POST",
+        body: formData,
       }),
-      keepUnusedDataFor: 5,
-      providesTags: ["Packages"],
+      invalidatesTags: ["Packages"],
     }),
 
     //PUBLIC - USER AND ADMIN GET ALL PACKAGES

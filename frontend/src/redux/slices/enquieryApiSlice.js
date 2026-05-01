@@ -22,7 +22,7 @@ export const enquieryApislice = apiSlice.injectEndpoints({
     }),
 
     //ADMIN DELETE ENQUIRY AFTER INTERACTION DONE
-    deleteEnquiry: builder.query({
+    deleteEnquiry: builder.mutation({
       query: (enquiryId) => ({
         url: `${ENQUIRY_URL}/${enquiryId}`,
         method: "DELETE",
@@ -30,7 +30,7 @@ export const enquieryApislice = apiSlice.injectEndpoints({
     }),
 
     //ADMIN MARK ENQUIRY STATUS TO DONE
-    updateEnquieryStatus: builder.query({
+    updateEnquieryStatus: builder.mutation({
       query: (enquiryId) => ({
         url: `${ENQUIRY_URL}/${enquiryId}/done`,
         method: "PUT",
@@ -41,6 +41,6 @@ export const enquieryApislice = apiSlice.injectEndpoints({
 export const {
   useSendEnquieryMutation,
   useGetEnquiriesQuery,
-  useDeleteEnquiryQuery,
-  useUpdateEnquieryStatusQuery,
+  useDeleteEnquiryMutation,
+  useUpdateEnquieryStatusMutation,
 } = enquieryApislice;

@@ -26,7 +26,7 @@ function AdminDashboard() {
     <header className="w-full bg-gradient-to-r from-[#031d3f] via-[#0a2a5c] to-[#031d3f] shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <h1 className="text-white font-bold text-xl tracking-wide">
-          <Link to="/">Admin Panel</Link>
+          <Link to="/admin/packages">Admin Panel</Link>
         </h1>
 
         <nav className="hidden md:flex items-center gap-10 text-white font-medium">

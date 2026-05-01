@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Form, useNavigate, useParams } from "react-router-dom";
-
-import {
-  useGetPackageByIdQuery,
-  useUpdatePackageMutation,
-} from "@/redux/slices/packageApiSlice";
 import { Button } from "@/components/ui/button";
-import { BiLeftArrow } from "react-icons/bi";
+import { useCreatePackageMutation } from "@/redux/slices/packageApiSlice";
 import { ArrowLeft } from "lucide-react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-function PackageEditScreen() {
-  const { id } = useParams();
+function PackageCreateScreen() {
   const navigate = useNavigate();
-  const { data: pkg, isLoading, isError } = useGetPackageByIdQuery(id);
-  const [updatePackage, { isLoading: updating }] = useUpdatePackageMutation();
-
+  const [createPkg, { isLoading, isError }] = useCreatePackageMutation();
   const tagOptions = [
     "GROUP TOUR",
     "FAMILY",
@@ -24,7 +16,7 @@ function PackageEditScreen() {
     "HONEYMOON",
     "TREKKING",
   ];
-
+  const [imageFile, setImageFile] = useState();
   const [input, setInput] = useState({
     title: "",
     badge: "",
@@ -40,29 +32,14 @@ function PackageEditScreen() {
     priceNote: "",
     image: "",
   });
+  const inputHandler = (e) => {
+    const { name, value, type, checked } = e.target;
 
-  const [imageFile, setImageFile] = useState("");
-
-  useEffect(() => {
-    if (pkg) {
-      setInput({
-        title: pkg.title || "",
-        badge: pkg.badge || "",
-        tags: pkg.tags || [],
-        rating: pkg.rating || "",
-        reviews: pkg.reviews || "",
-        inclusive: pkg.inclusive || false,
-        days: pkg.days || "",
-        destinations: pkg.destinations || "",
-        departures: pkg.departures || "",
-        highlights: pkg.highlights || "",
-        price: pkg.price || "",
-        priceNote: pkg.priceNote || "",
-        image: pkg.image || "",
-      });
-    }
-  }, [pkg]);
-
+    setInput((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
   const handleBadgeChange = (e) => {
     setInput((prev) => ({
       ...prev,
@@ -81,16 +58,7 @@ function PackageEditScreen() {
     });
   };
 
-  const inputHandler = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    setInput((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const updateHandler = async (e) => {
+  const createPackageHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", input.title);
@@ -110,12 +78,13 @@ function PackageEditScreen() {
     }
 
     try {
-      const res = await updatePackage({ id, formData }).unwrap();
-      setImageFile(res.image);
+      const res = await createPkg(formData).unwrap();
+      toast.success(res?.data?.message || "Package created", {
+        position: "top-center",
+      });
       navigate("/admin/packages");
-      toast.success(res?.data?.message || "package Updated")
     } catch (error) {
-      toast.error(error?.data?.message || "")
+      toast.error(error?.data?.message || "Failed to create package");
     }
   };
   return (
@@ -131,10 +100,10 @@ function PackageEditScreen() {
             <span className="hidden sm:inline">Back</span>
           </Button>
         </div>
-        <h1 className="text-2xl font-bold mb-6">Edit Package Details</h1>
+        <h1 className="text-2xl font-bold mb-6">Add New Package</h1>
 
         <form
-          onSubmit={updateHandler}
+          onSubmit={createPackageHandler}
           className="bg-white p-6 rounded-xl shadow space-y-6"
         >
           {/* Grid Layout */}
@@ -278,19 +247,10 @@ function PackageEditScreen() {
             placeholder="select image"
           />
 
-          {/* <input
-            type="text"
-            name="image"
-            value={formData.image}
-            onChange={inputHandler}
-            placeholder="Image URL"
-            className="input w-full"
-          /> */}
-
           {/* Preview */}
-          {input.image && (
+          {/* {input.image && (
             <img src={input.image} alt="preview" className="w-40 rounded-lg" />
-          )}
+          )} */}
 
           {/* Checkbox */}
           <label className="flex items-center gap-2">
@@ -306,19 +266,11 @@ function PackageEditScreen() {
           {/* Buttons */}
           <div className="flex justify-end gap-4">
             <button
-              type="button"
-              onClick={() => navigate("/admin/packages")}
-              className="px-4 py-2 border rounded"
-            >
-              Cancel
-            </button>
-
-            <button
               type="submit"
-              className="bg-black text-white px-6 py-2 rounded"
-              disabled={updating}
+              className="bg-blue-600 text-white px-6 py-2 rounded"
+              disabled={isLoading}
             >
-              {updating ? "Updating..." : "Update"}
+              {isLoading ? "Creating" : "Create"}
             </button>
           </div>
         </form>
@@ -327,4 +279,4 @@ function PackageEditScreen() {
   );
 }
 
-export default PackageEditScreen;
+export default PackageCreateScreen;
