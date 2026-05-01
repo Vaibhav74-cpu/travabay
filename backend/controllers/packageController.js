@@ -4,6 +4,7 @@ dotenv.config();
 import getDataUri from "../util/dataUri.js";
 import cloudinary from "../services/cloudinary.js";
 import Package from "../model/packageModel.js";
+import { log } from "console";
 
 // desc -> fetch all products
 // route-> /api/packages/
@@ -138,6 +139,7 @@ export const updatePackage = asyncHandler(async (req, res) => {
     throw new Error("Package not found");
   }
 
+  const parsedTags = tags ? JSON.parse(tags) : [];
   const imageUri = getDataUri(image);
 
   const cloudResponse = await cloudinary.uploader.upload(
@@ -147,10 +149,12 @@ export const updatePackage = asyncHandler(async (req, res) => {
     // }
   );
 
+  pkg.user = pkg.user || req.admin._id || req.admin;
+
   if (pkg) {
     pkg.title = title;
     pkg.badge = badge;
-    pkg.tags = tags;
+    pkg.tags = parsedTags;
     pkg.rating = rating;
     pkg.reviews = reviews;
     pkg.inclusive = inclusive;
