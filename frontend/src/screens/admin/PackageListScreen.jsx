@@ -20,6 +20,11 @@ function PackageListScreen() {
   console.log(packages);
 
   const packageEdit = (id) => {
+    if (!id) {
+      console.error("Invalid package ID");
+      return;
+    }
+
     navigate(`/admin/package/${id}/edit`);
   };
 

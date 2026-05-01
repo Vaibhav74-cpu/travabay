@@ -11,10 +11,10 @@ import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 import FAQScreen from "./screens/FAQScreen";
 import PackagesScreen from "./screens/PackagesScreen";
 import CorporateTravelScreen from "./screens/CorporateTravelScreen";
-import Login from "./components/shared/Login";
+// import Login from "./components/shared/Login";
 import LoginScreen from "./screens/admin/LoginScreen";
 import VerifyOtpScreen from "./screens/admin/VerifyOtpScreen";
-import AdminDashboard from "./screens/admin/AdminDashboard";
+// import AdminDashboard from "./screens/admin/AdminDashboard";
 import PackageListScreen from "./screens/admin/PackageListScreen";
 import EnquirysScreen from "./screens/admin/EnquirysScreen";
 import BookingScreen from "./screens/admin/BookingScreen";
@@ -46,7 +46,7 @@ const appRouter = createBrowserRouter([
   //admin
   { path: "/admin/login", element: <LoginScreen /> },
   { path: "/admin/verify-email", element: <VerifyOtpScreen /> },
-  { path: "/admin/dashboard", element: <AdminDashboard /> },
+  // { path: "/admin/dashboard", element: <AdminDashboard /> },
   { path: "/admin/packages", element: <PackageListScreen /> },
   { path: "/admin/enquiries", element: <EnquirysScreen /> },
   { path: "/admin/bookings", element: <BookingScreen /> },

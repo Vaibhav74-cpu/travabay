@@ -7,10 +7,10 @@ import {
 } from "@/redux/slices/packageApiSlice";
 
 function PackageEditScreen() {
-  const { id: pkgId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { data: pkg, isLoading, isError } = useGetPackageByIdQuery(pkgId);
-  const [update, { isLoading: updating }] = useUpdatePackageMutation();
+  const { data: pkg, isLoading, isError } = useGetPackageByIdQuery(id);
+  const [updatePackage, { isLoading: updating }] = useUpdatePackageMutation();
 
   const tagOptions = [
     "GROUP TOUR",
@@ -21,7 +21,7 @@ function PackageEditScreen() {
     "TREKKING",
   ];
 
-  const [formData, setFormData] = useState({
+  const [input, setInput] = useState({
     title: "",
     badge: "",
     tags: [],
@@ -37,12 +37,14 @@ function PackageEditScreen() {
     image: "",
   });
 
+  const [imageFile, setImageFile] = useState("");
+
   useEffect(() => {
     if (pkg) {
-      setFormData({
+      setInput({
         title: pkg.title || "",
         badge: pkg.badge || "",
-        tags: pkg.tags?.join(", ") || "",
+        tags: pkg.tags || [],
         rating: pkg.rating || "",
         reviews: pkg.reviews || "",
         inclusive: pkg.inclusive || false,
@@ -58,56 +60,57 @@ function PackageEditScreen() {
   }, [pkg]);
 
   const handleBadgeChange = (e) => {
-    const value = e.target.value;
-
-    setFormData((prev) => ({
+    setInput((prev) => ({
       ...prev,
-      badge: value,
+      badge: e.target.value,
     }));
   };
 
   const handleTagChange = (tag) => {
-    setFormData((prev) => {
-      const isSelected = prev.tags.includes(tag);
+    setInput((prev) => {
+      const exists = prev.tags.includes(tag);
 
-      if (isSelected) {
-        return {
-          ...prev,
-          tags: prev.tags.filter((t) => t !== tag),
-        };
-      } else {
-        return {
-          ...prev,
-          tags: [...prev.tags, tag],
-        };
-      }
+      return {
+        ...prev,
+        tags: exists ? prev.tags.filter((t) => t !== tag) : [...prev.tags, tag],
+      };
     });
   };
 
   const inputHandler = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData({
-      ...formData,
+    setInput((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const updateHandler = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", input.title);
+    formData.append("badge", input.badge);
+    formData.append("tags", JSON.stringify(input.tags));
+    formData.append("rating", input.rating);
+    formData.append("reviews", input.reviews);
+    formData.append("inclusive", input.inclusive);
+    formData.append("days", input.days);
+    formData.append("destinations", input.destinations);
+    formData.append("departures", input.departures);
+    formData.append("highlights", input.highlights);
+    formData.append("price", input.price);
+    formData.append("priceNote", input.priceNote);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
 
     try {
-      await updatePackage({
-        id,
-        ...formData,
-        tags: formData.tags.split(",").map((tag) => tag.trim()),
-      }).unwrap();
-
-      alert("Package Updated Successfully");
+      const res = await updatePackage({ id, formData }).unwrap();
+      setImageFile(res.image);
       navigate("/admin/packages");
     } catch (error) {
-      console.error(error);
-      alert("Update Failed");
+      console.log(error);
     }
   };
   return (
@@ -116,7 +119,7 @@ function PackageEditScreen() {
         <h1 className="text-2xl font-bold mb-6">Edit Package Details</h1>
 
         <form
-          onSubmit={handleSubmit}
+          onSubmit={updateHandler}
           className="bg-white p-6 rounded-xl shadow space-y-6"
         >
           {/* Grid Layout */}
@@ -124,7 +127,7 @@ function PackageEditScreen() {
             <input
               type="text"
               name="title"
-              value={formData.title}
+              value={input.title}
               onChange={inputHandler}
               placeholder="Title"
               className="input"
@@ -138,7 +141,7 @@ function PackageEditScreen() {
 
               <select
                 name="badge"
-                value={formData.badge || ""}
+                value={input.badge || ""}
                 onChange={handleBadgeChange}
                 className="input bg-white"
               >
@@ -161,7 +164,7 @@ function PackageEditScreen() {
                   <label
                     key={tag}
                     className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer transition ${
-                      formData.tags.includes(tag)
+                      input.tags.includes(tag)
                         ? "bg-blue-500 text-white border-blue-500"
                         : "bg-gray- 50 hover:bg-gray-100"
                     }`}
@@ -169,7 +172,7 @@ function PackageEditScreen() {
                     <input
                       type="checkbox"
                       value={tag}
-                      checked={formData.tags.includes(tag)}
+                      checked={input.tags.includes(tag)}
                       onChange={() => handleTagChange(tag)}
                       className="hidden"
                     />
@@ -183,7 +186,7 @@ function PackageEditScreen() {
             <input
               type="number"
               name="rating"
-              value={formData.rating}
+              value={input.rating}
               onChange={inputHandler}
               placeholder="Rating"
               className="input"
@@ -192,7 +195,7 @@ function PackageEditScreen() {
             <input
               type="number"
               name="reviews"
-              value={formData.reviews}
+              value={input.reviews}
               onChange={inputHandler}
               placeholder="Reviews"
               className="input"
@@ -201,7 +204,7 @@ function PackageEditScreen() {
             <input
               type="text"
               name="days"
-              value={formData.days}
+              value={input.days}
               onChange={inputHandler}
               placeholder="Days (e.g. 7 Nights 8 Days)"
               className="input"
@@ -210,7 +213,7 @@ function PackageEditScreen() {
             <input
               type="number"
               name="destinations"
-              value={formData.destinations}
+              value={input.destinations}
               onChange={inputHandler}
               placeholder="Destinations"
               className="input"
@@ -219,7 +222,7 @@ function PackageEditScreen() {
             <input
               type="number"
               name="departures"
-              value={formData.departures}
+              value={input.departures}
               onChange={inputHandler}
               placeholder="Departures"
               className="input"
@@ -228,7 +231,7 @@ function PackageEditScreen() {
             <input
               type="number"
               name="price"
-              value={formData.price}
+              value={input.price}
               onChange={inputHandler}
               placeholder="Price"
               className="input"
@@ -237,7 +240,7 @@ function PackageEditScreen() {
             <input
               type="text"
               name="priceNote"
-              value={formData.priceNote}
+              value={input.priceNote}
               onChange={inputHandler}
               placeholder="Price Note"
               className="input"
@@ -247,7 +250,7 @@ function PackageEditScreen() {
           {/* Highlights */}
           <textarea
             name="highlights"
-            value={formData.highlights}
+            value={input.highlights}
             onChange={inputHandler}
             placeholder="Highlights"
             className="input w-full h-24"
@@ -255,21 +258,23 @@ function PackageEditScreen() {
 
           {/* Image */}
           <input
+            type="file"
+            onChange={(e) => setImageFile(e.target.files[0])}
+            placeholder="select image"
+          />
+
+          {/* <input
             type="text"
             name="image"
             value={formData.image}
             onChange={inputHandler}
             placeholder="Image URL"
             className="input w-full"
-          />
+          /> */}
 
           {/* Preview */}
-          {formData.image && (
-            <img
-              src={formData.image}
-              alt="preview"
-              className="w-40 rounded-lg"
-            />
+          {input.image && (
+            <img src={input.image} alt="preview" className="w-40 rounded-lg" />
           )}
 
           {/* Checkbox */}
@@ -277,7 +282,7 @@ function PackageEditScreen() {
             <input
               type="checkbox"
               name="inclusive"
-              checked={formData.inclusive}
+              checked={input.inclusive}
               onChange={inputHandler}
             />
             Inclusive Package

@@ -23,7 +23,7 @@ function VerifyOtpScreen() {
       );
 
       dispatch(setCredentials(res.data));
-      navigate("/admin/dashboard");
+      navigate("/admin/packages");
     } catch (error) {
       console.log(error);
     }

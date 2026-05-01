@@ -31,8 +31,8 @@ export const packagesApislice = apiSlice.injectEndpoints({
 
     //ADMIN UPDATE PACKAGE DETAILS
     updatePackage: builder.mutation({
-      query: ({ packageId, formData }) => ({
-        url: `${PACKAGE_URL}/${packageId}`,
+      query: ({ id, formData }) => ({
+        url: `${PACKAGE_URL}/${id}`,
         method: "PUT",
         body: formData,
       }),
