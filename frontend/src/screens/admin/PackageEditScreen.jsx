@@ -16,6 +16,57 @@ function PackageEditScreen() {
   const { data: pkg, isLoading, isError } = useGetPackageByIdQuery(id);
   const [updatePackage, { isLoading: updating }] = useUpdatePackageMutation();
 
+  const indiaData = {
+    "north-india": {
+      "himachal pradesh": ["Manali", "Shimla", "Dharamshala"],
+      uttarakhand: ["Nainital", "Rishikesh", "Haridwar"],
+      "jammu kashmir": ["Srinagar", "Gulmarg"],
+    },
+
+    "south-india": {
+      kerala: ["Munnar", "Alleppey", "Kochi"],
+      tamilnadu: ["Ooty", "Kodaikanal", "Chennai"],
+      karnataka: ["Coorg", "Bangalore"],
+    },
+
+    "west-india": {
+      goa: ["North Goa", "South Goa"],
+      gujarat: ["Ahmedabad", "Kutch"],
+      rajasthan: ["Jaipur", "Udaipur", "Jaisalmer"],
+      maharashtra: ["Mumbai", "Lonavala", "Pune"],
+    },
+
+    "north-east": {
+      assam: ["Guwahati", "Kaziranga"],
+      sikkim: ["Gangtok"],
+      meghalaya: ["Shillong"],
+    },
+  };
+
+  const worldData = {
+    asia: {
+      japan: ["Tokyo", "Kyoto", "Osaka"],
+      thailand: ["Bangkok", "Phuket", "Krabi"],
+      indonesia: ["Bali"],
+    },
+
+    europe: {
+      france: ["Paris", "Nice"],
+      italy: ["Rome", "Venice"],
+      switzerland: ["Zurich", "Lucerne"],
+    },
+
+    america: {
+      usa: ["New York", "Los Angeles", "Las Vegas"],
+      canada: ["Toronto", "Vancouver"],
+    },
+
+    africa: {
+      egypt: ["Cairo", "Luxor"],
+      kenya: ["Nairobi"],
+    },
+  };
+
   const tagOptions = [
     "GROUP TOUR",
     "FAMILY",
@@ -24,7 +75,17 @@ function PackageEditScreen() {
     "HONEYMOON",
     "TREKKING",
   ];
+  const [type, setType] = useState(""); // india | world
 
+  // india
+  const [category, setCategory] = useState("");
+  const [stateName, setStateName] = useState("");
+  const [city, setCity] = useState("");
+
+  // world
+  const [continent, setContinent] = useState("");
+  const [country, setCountry] = useState("");
+  const [imageFile, setImageFile] = useState("");
   const [input, setInput] = useState({
     title: "",
     badge: "",
@@ -38,10 +99,8 @@ function PackageEditScreen() {
     highlights: "",
     price: "",
     priceNote: "",
-    image: "",
+    imageFile: "",
   });
-
-  const [imageFile, setImageFile] = useState("");
 
   useEffect(() => {
     if (pkg) {
@@ -60,6 +119,7 @@ function PackageEditScreen() {
         priceNote: pkg.priceNote || "",
         image: pkg.image || "",
       });
+      setType(pkg.type || [] || "");
     }
   }, [pkg]);
 
@@ -92,6 +152,20 @@ function PackageEditScreen() {
 
   const updateHandler = async (e) => {
     e.preventDefault();
+    if (type === "india") {
+      if (!category || !stateName || !city) {
+        toast.error("Please select Category, State and City");
+        return;
+      }
+    }
+
+    if (type === "world") {
+      if (!continent || !country || !city) {
+        toast.error("Please select Continent, Country and City");
+        return;
+      }
+    }
+
     const formData = new FormData();
     formData.append("title", input.title);
     formData.append("badge", input.badge);
@@ -108,14 +182,26 @@ function PackageEditScreen() {
     if (imageFile) {
       formData.append("image", imageFile);
     }
+    formData.append("type", type);
+    if (type === "india") {
+      formData.append("category", category);
+      formData.append("group", stateName);
+      formData.append("destinationName", city);
+    }
+
+    if (type === "world") {
+      formData.append("category", continent);
+      formData.append("group", country);
+      formData.append("destinationName", city);
+    }
 
     try {
       const res = await updatePackage({ id, formData }).unwrap();
       setImageFile(res.image);
       navigate("/admin/packages");
-      toast.success(res?.data?.message || "package Updated")
+      toast.success(res?.data?.message || "package Updated");
     } catch (error) {
-      toast.error(error?.data?.message || "")
+      toast.error(error?.data?.message || "");
     }
   };
   return (
@@ -137,6 +223,141 @@ function PackageEditScreen() {
           onSubmit={updateHandler}
           className="bg-white p-6 rounded-xl shadow space-y-6"
         >
+          {/* REGIONS / CATEGORY / GROUP / CITY */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+            <select
+              value={type}
+              onChange={(e) => {
+                setType(e.target.value);
+
+                // reset everything
+                setCategory("");
+                setStateName("");
+                setCity("");
+                setContinent("");
+                setCountry("");
+              }}
+              className="input"
+            >
+              <option value="">Select Type</option>
+              <option value="india">India</option>
+              <option value="world">World</option>
+            </select>
+            {type === "india" && (
+              <>
+                {/* CATEGORY */}
+                <select
+                  value={category}
+                  onChange={(e) => {
+                    setCategory(e.target.value);
+                    setStateName("");
+                    setCity("");
+                  }}
+                  className="input"
+                >
+                  <option value="">Select Category</option>
+                  {Object.keys(indiaData).map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+
+                {/* STATE */}
+                {category && (
+                  <select
+                    value={stateName}
+                    onChange={(e) => {
+                      setStateName(e.target.value);
+                      setCity("");
+                    }}
+                    className="input"
+                  >
+                    <option value="">Select State</option>
+                    {Object.keys(indiaData[category]).map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                {/* CITY */}
+                {stateName && (
+                  <select
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="input"
+                  >
+                    <option value="">Select City</option>
+                    {indiaData[category][stateName].map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </>
+            )}
+
+            {type === "world" && (
+              <>
+                {/* CONTINENT */}
+                <select
+                  value={continent}
+                  onChange={(e) => {
+                    setContinent(e.target.value);
+                    setCountry("");
+                    setCity("");
+                  }}
+                  className="input"
+                >
+                  <option value="">Select Continent</option>
+                  {Object.keys(worldData).map((cont) => (
+                    <option key={cont} value={cont}>
+                      {cont}
+                    </option>
+                  ))}
+                </select>
+
+                {/* COUNTRY */}
+                {continent && (
+                  <select
+                    value={country}
+                    onChange={(e) => {
+                      setCountry(e.target.value);
+                      setCity("");
+                    }}
+                    className="input"
+                  >
+                    <option value="">Select Country</option>
+                    {Object.keys(worldData[continent]).map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                {/* CITY */}
+                {country && (
+                  <select
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="input"
+                  >
+                    <option value="">Select City</option>
+                    {worldData[continent][country].map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </>
+            )}
+          </div>
+
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input

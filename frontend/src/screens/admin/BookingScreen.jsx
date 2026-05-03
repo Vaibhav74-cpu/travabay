@@ -41,13 +41,13 @@ function BookingScreen() {
     }
   };
 
-  const deletebooking = async (id) => {
+  const deletebooking = async (bookingId) => {
     if (window.confirm("Are you sure want to delete this Booking")) {
       try {
-        const res = await deleteBkg(id);
+        const res = await deleteBkg(bookingId);
         refetch();
         toast.success(
-          res?.message || res?.data?.message || "Enquiery Deleted successfully",
+          res?.message || res?.data?.message || "Booking Deleted successfully",
         );
       } catch (error) {
         toast.error(error?.data?.message || error?.message);
@@ -79,6 +79,7 @@ function BookingScreen() {
                 <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {data?.bookings?.map((booking) => (
                 <TableRow key={booking._id}>
@@ -172,7 +173,7 @@ function BookingScreen() {
 
                         {/* Delete */}
                         <button
-                          onClick={() => deletebooking(enquiry._id)}
+                          onClick={() => deletebooking(booking._id)}
                           className="text-red-500 hover:text-red-700 text-lg"
                         >
                           <FaTrash />
