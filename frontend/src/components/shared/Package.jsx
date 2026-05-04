@@ -13,8 +13,7 @@ function Package({ pkg }) {
               <img
                 src={pkg?.image}
                 alt={pkg.title}
-                className="w-full h-full object-cover"
-              />
+                className="w-full h-full object-cover" />
             </Link>
           </div>
           <div>
