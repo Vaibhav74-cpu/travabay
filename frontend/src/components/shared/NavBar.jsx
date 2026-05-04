@@ -1,37 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/Travabay_logo.png";
 import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 function NavBar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <header className="flex flex-wrap">
-      <div className="w-full flex items-center justify-between bg-[#212529]">
-        {/* Left Logo */}
-        <div className="logo w-32 m-2 mx-8">
+    <header className="w-full bg-[#212529] text-white">
+      {/* TOP BAR */}
+      <div className="flex items-center justify-between px-4 md:px-8 py-3">
+        {/* LEFT: LOGO */}
+        <div className="w-28 md:w-32">
           <Link to="/">
-            <img src={logo} alt="Travabay Logo" />
+            <img src={logo} alt="Travabay Logo" className="w-full" />
           </Link>
         </div>
 
-        {/* Search Bar */}
-        <div className="flex-1 max-w-xl">
+        {/* CENTER: SEARCH (hidden on small screens) */}
+        <div className="hidden md:flex flex-1 max-w-xl mx-6">
           <input
             type="text"
             placeholder='Search "Eiffel Tower"'
-            className="flex w-full rounded-full px-4 h-10 text-sm"
+            className="w-full rounded-full px-4 h-10 text-sm text-black"
           />
         </div>
 
-        {/* Right Buttons */}
-        <div className="flex font-bold text-sm">
-          <button className="px-4 py-1 m-4 border text-sx border-yellow-500 rounded-full text-yellow-500">
+        {/* RIGHT: BUTTONS (desktop) */}
+        <div className="hidden md:flex items-center gap-3 font-bold text-sm">
+          <button className="px-4 py-1 border border-yellow-500 rounded-full text-yellow-500 hover:bg-yellow-500 hover:text-black transition">
             Invite-only club
           </button>
-          <button className="px-4 py-1 m-3 rounded-full bg-[#0096c7] text-white">
+
+          <button className="px-4 py-1 rounded-full bg-[#0096c7] hover:bg-[#0077a6] transition">
             +91 95796 59074
           </button>
         </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* MOBILE MENU */}
+      {isOpen && (
+        <div className="md:hidden px-4 pb-4 space-y-4">
+          {/* SEARCH */}
+          <input
+            type="text"
+            placeholder='Search "Eiffel Tower"'
+            className="w-full rounded-full px-4 h-10 text-sm text-black"
+          />
+
+          {/* BUTTONS */}
+          <button className="w-full px-4 py-2 border border-yellow-500 rounded-full text-yellow-500">
+            Invite-only club
+          </button>
+
+          <button className="w-full px-4 py-2 rounded-full bg-[#0096c7]">
+            +91 95796 59074
+          </button>
+        </div>
+      )}
     </header>
   );
 }

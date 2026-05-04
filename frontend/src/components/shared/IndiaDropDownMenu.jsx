@@ -4,33 +4,42 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
 
 function IndiaDropDownMenu() {
-  const data = {
-    india: {
-      "north-india": {
-        "himachal pradesh": ["Manali", "Shimla"],
-        uttarakhand: ["Nainital", "Rishikesh"],
-      },
-      "south-india": {
-        kerala: ["Munnar", "Alleppey"],
-      },
-      "west-india": {
-        goa: ["North Goa", "South Goa"],
-        gujarat: ["Ahmedabad", "Kutch"],
-        rajasthan: ["Jaipur", "Udaipur", "Jaisalmer"],
-        maharashtra: ["Mumbai", "Lonavala", "Pune"],
-      },
+  const { data: pkg, isLoading, isError } = useGetPackagesQuery();
+  // console.log(pkg);
 
-      "north-east": {
-        assam: ["Guwahati", "Kaziranga"],
-        sikkim: ["Gangtok"],
-        meghalaya: ["Shillong"],
-      },
-    },
-  };
+  // STATIC DATA
+  const categories = ["north-india", "south-india", "west-india", "north-east"];
+
+  // const data = {
+  //   india: {
+  //     "north-india": {
+  //       "himachal pradesh": ["Manali", "Shimla"],
+  //       uttarakhand: ["Nainital", "Rishikesh"],
+  //     },
+  //     "south-india": {
+  //       kerala: ["Munnar", "Alleppey"],
+  //     },
+  //     "west-india": {
+  //       goa: ["North Goa", "South Goa"],
+  //       gujarat: ["Ahmedabad", "Kutch"],
+  //       rajasthan: ["Jaipur", "Udaipur", "Jaisalmer"],
+  //       maharashtra: ["Mumbai", "Lonavala", "Pune"],
+  //     },
+
+  //     "north-east": {
+  //       assam: ["Guwahati", "Kaziranga"],
+  //       sikkim: ["Gangtok"],
+  //       meghalaya: ["Shillong"],
+  //     },
+  //   },
+  // };
+  
   const [activeCategory, setActiveCategory] = useState("north-india");
   const [isOpen, setIsOpen] = useState(false);
+  const [dynamicData, setDynamicData] = useState({});
   const dropdownRef = useRef(null);
 
   // Close on outside click
@@ -44,15 +53,45 @@ function IndiaDropDownMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  //TREANSFORM BACKEND DATA ON UI FORMAT
+  useEffect(() => {
+    if (!pkg) return;
+
+    const formatted = {};
+
+    pkg.forEach((item) => {
+      if (item.type !== "india") return;
+
+      const category = item.category;
+      const group = item.group;
+      const city = item.destinationName;
+
+      if (!formatted[category]) {
+        formatted[category] = {};
+      }
+
+      if (!formatted[category][group]) {
+        formatted[category][group] = [];
+      }
+
+      // avoid duplicates
+      if (!formatted[category][group].includes(city)) {
+        formatted[category][group].push(city);
+      }
+    });
+
+    setDynamicData(formatted);
+  }, [pkg]);
+
   return (
     <div ref={dropdownRef} className="relative">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-bold",
+          "inline-flex items-center gap-1 rounded-md mr-3 px-3 py-2 text-sm font-bold",
           "bg-transparent hover:bg-gray-100 transition-colors select-none",
           "focus:outline-none focus:ring-2 focus:ring-blue-500",
-          isOpen && "bg-gray-100",
+          isOpen && "bg-gray-100 text-black",
         )}
       >
         India
@@ -79,7 +118,7 @@ function IndiaDropDownMenu() {
             {/* <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                   Regions
                 </p> */}
-            {Object.keys(data.india).map((category) => (
+            {categories.map((category) => (
               <div
                 key={category}
                 onMouseEnter={() => setActiveCategory(category)}
@@ -101,30 +140,37 @@ function IndiaDropDownMenu() {
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
               All Destinations
             </p>
-            <div className="grid grid-cols-3 gap-6">
-              {Object.entries(data.india[activeCategory]).map(
-                ([group, destinations]) => (
-                  <div key={group}>
-                    <h4 className="font-semibold mb-2 capitalize text-sm text-gray-800">
-                      {group}
-                    </h4>
-                    <ul className="space-y-1">
-                      {destinations.map((dest) => (
-                        <li key={dest}>
-                          <Link
-                            to={`/packages/${dest.toLowerCase()}`}
-                            onClick={() => setIsOpen(false)}
-                            className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
-                          >
-                            {dest}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ),
-              )}
-            </div>
+
+            {isLoading ? (
+              <p className="text-sm text-gray-400">Loading...</p>
+            ) : !dynamicData[activeCategory] ? (
+              <p className="text-sm text-gray-400">No destinations available</p>
+            ) : (
+              <div className="grid grid-cols-3 gap-6">
+                {Object.entries(dynamicData[activeCategory] || {}).map(
+                  ([group, cities]) => (
+                    <div key={group}>
+                      <h4 className="font-semibold mb-2 capitalize text-sm text-gray-800">
+                        {group}
+                      </h4>
+                      <ul className="space-y-1">
+                        {cities.map((city) => (
+                          <li key={city}>
+                            <Link
+                              to={`/packages/${city.toLowerCase()}`}
+                              onClick={() => setIsOpen(false)}
+                              className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                            >
+                              {city}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -2,29 +2,34 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
 
 function WorldDropDownMenu() {
-  const data = {
-    world: {
-      africa: {
-        egypt: ["Cairo", "Luxor"],
-        kenya: ["Masai Mara"],
-      },
-      america: {
-        usa: ["New York", "Los Angeles", "San Francisco", "Las Vegas"],
-        canada: ["Toronto", "Vancouver", "Montreal"],
-        "south america": ["Rio de Janeiro", "Buenos Aires", "Machu Picchu"],
-      },
-      asia: {
-        japan: ["Tokyo", "Kyoto"],
-      },
-      europe: {
-        france: ["Paris"],
-      },
-    },
-  };
+  const { data: pkg, isLoading, isError } = useGetPackagesQuery();
+  console.log(pkg);
+  // const data = {
+  //   world: {
+  //     africa: {
+  //       egypt: ["Cairo", "Luxor"],
+  //       kenya: ["Masai Mara"],
+  //     },
+  //     america: {
+  //       usa: ["New York", "Los Angeles", "San Francisco", "Las Vegas"],
+  //       canada: ["Toronto", "Vancouver", "Montreal"],
+  //       "south america": ["Rio de Janeiro", "Buenos Aires", "Machu Picchu"],
+  //     },
+  //     asia: {
+  //       japan: ["Tokyo", "Kyoto"],
+  //     },
+  //     europe: {
+  //       france: ["Paris"],
+  //     },
+  //   },
+  // };
+  const regions = ["asia", "europe", "america", "africa"];
 
-  const [activeRegion, setActiveRegion] = useState("america");
+  const [activeRegion, setActiveRegion] = useState("asia");
+  const [dynamicData, setDynamicData] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -39,6 +44,34 @@ function WorldDropDownMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!pkg) return;
+
+    const formatted = {};
+
+    pkg.forEach((item) => {
+      if (item.type !== "world") return;
+
+      const continent = item.category;
+      const country = item.group;
+      const city = item.destinationName;
+
+      if (!formatted[continent]) {
+        formatted[continent] = {};
+      }
+
+      if (!formatted[continent][country]) {
+        formatted[continent][country] = [];
+      }
+
+      if (!formatted[continent][country].includes(city)) {
+        formatted[continent][country].push(city);
+      }
+    });
+
+    setDynamicData(formatted);
+  }, [pkg]);
+
   return (
     <div ref={dropdownRef} className="relative">
       <button
@@ -47,7 +80,7 @@ function WorldDropDownMenu() {
           "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-bold",
           "bg-transparent hover:bg-gray-100 transition-colors select-none",
           "focus:outline-none focus:ring-2 focus:ring-blue-500",
-          isOpen && "bg-gray-100",
+          isOpen && "bg-gray-100 text-black",
         )}
       >
         World
@@ -74,7 +107,7 @@ function WorldDropDownMenu() {
             {/* <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                      Regions
                    </p> */}
-            {Object.keys(data.world).map((region) => (
+            {regions.map((region) => (
               <div
                 key={region}
                 onMouseEnter={() => setActiveRegion(region)}
@@ -86,7 +119,7 @@ function WorldDropDownMenu() {
                     : "hover:bg-gray-100 text-gray-700",
                 )}
               >
-                {region.replace(/-/g, " ")}
+                {region}
               </div>
             ))}
           </div>
@@ -111,7 +144,7 @@ function WorldDropDownMenu() {
                    </div> */}
 
             <div className="flex gap-4 mb-4 flex-wrap">
-              {Object.keys(data.world).map((tab) => (
+              {regions.map((tab) => (
                 <span
                   key={tab}
                   className={`px-3 py-1 rounded-full text-sm border ${
@@ -125,30 +158,33 @@ function WorldDropDownMenu() {
               ))}
             </div>
 
-            {/* ALL DESTINATIONS */}
-            <div className="grid grid-cols-3 gap-6">
-              {Object.entries(data.world[activeRegion]).map(
-                ([city, destinations]) => (
-                  <div key={city}>
-                    <h4 className="font-semibold mb-2 capitalize text-sm text-gray-800">
-                      {city}
-                    </h4>
-                    <ul className="space-y-1">
-                      {data.world[activeRegion][
-                        Object.keys(data.world[activeRegion])[0]
-                      ].map((city) => (
-                        <li
-                          key={city}
-                          className="hover:text-blue-600 cursor-pointer"
-                        >
-                          <Link to="/packages/id">{city}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ),
-              )}
-            </div>
+            {isLoading ? (
+              <p className="text-sm text-gray-400">Loading...</p>
+            ) : !dynamicData[activeRegion] ? (
+              <p className="text-sm text-gray-400">No destinations available</p>
+            ) : (
+              <div className="grid grid-cols-3 gap-6">
+                {Object.entries(dynamicData[activeRegion] || {}).map(
+                  ([country, destinations]) => (
+                    <div key={country}>
+                      <h4 className="font-semibold mb-2 capitalize text-sm text-gray-800">
+                        {country}
+                      </h4>
+                      <ul className="space-y-1">
+                        {destinations.map((dest) => (
+                          <li
+                            key={dest}
+                            className="hover:text-blue-600 cursor-pointer"
+                          >
+                            <Link to="/packages/id">{dest}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

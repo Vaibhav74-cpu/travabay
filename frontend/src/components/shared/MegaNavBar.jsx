@@ -4,8 +4,8 @@ import WorldDropDownMenu from "./WorldDropDownMenu";
 
 function MegaNavBar() {
   return (
-    <div className="relative z-[9999] bg-white shadow-sm">
-      <nav className="flex items-center justify-center px-6 py-3">
+    <div className="relative z-[9999]  bg-gradient-to-r from-[#031d3f] via-[#0a2a5c] to-[#031d3f] shadow-md">
+      <nav className="flex items-center justify-center px-4 md:px-8 py-3 text-white">
         {/* INDIA TRIGGER */}
         <IndiaDropDownMenu />
 
