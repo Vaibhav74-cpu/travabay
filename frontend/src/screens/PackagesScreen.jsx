@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import packages from "../packages.js";
 import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice.js";
+import Loader from "@/components/shared/Loader.jsx";
+import Message from "@/components/shared/Message.jsx";
 
 const tags = [
   "All Tags",
@@ -89,24 +91,17 @@ function PackagesScreen() {
   const [countrySearch, setCountrySearch] = useState("");
 
   // Filter packages based on selected filters
-  const filteredPackages = packages.filter((pkg) => {
-    const matchesTheme =
-      selectedTheme === "all" ||
-      pkg.tags.some((tag) => tag.toLowerCase().includes(selectedTheme));
-      
+  const filteredPackages = (packages || []).filter((pkg) => {
+    // if no filter selected → show all
+    if (selectedPriceRanges.length === 0) return true;
 
-    const matchesTag =
-      selectedTag === "All Tags" ||
-      pkg.tags.some((tag) => tag.toLowerCase() === selectedTag.toLowerCase());
+    return selectedPriceRanges.some((rangeId) => {
+      const range = priceRanges.find((r) => r.id === rangeId);
 
-    const matchesPrice =
-      selectedPriceRanges.length === 0 ||
-      selectedPriceRanges.some((rangeId) => {
-        const range = priceRanges.find((r) => r.id === rangeId);
-        return pkg.price >= range.min && pkg.price <= range.max;
-      });
+      if (!range) return false;
 
-    return matchesTheme && matchesTag && matchesPrice;
+      return pkg.price >= range.min && pkg.price <= range.max;
+    });
   });
 
   const handleResetFilters = () => {
@@ -125,37 +120,40 @@ function PackagesScreen() {
     );
   };
 
-  const toggleCountry = (countryId) => {
-    setSelectedCountries((prev) =>
-      prev.includes(countryId)
-        ? prev.filter((id) => id !== countryId)
-        : [...prev, countryId],
-    );
-  };
+  // const toggleCountry = (countryId) => {
+  //   setSelectedCountries((prev) =>
+  //     prev.includes(countryId)
+  //       ? prev.filter((id) => id !== countryId)
+  //       : [...prev, countryId],
+  //   );
+  // };
 
-  const filteredCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(countrySearch.toLowerCase()),
-  );
+  // const filteredCountries = countries.filter((country) =>
+  //   country.name.toLowerCase().includes(countrySearch.toLowerCase()),
+  // );
+
+  if (isLoading) return <p className="p-6">Loading...</p>;
+  if (isError) return <p className="p-6">Error loading packages</p>;
 
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Header Section */}
       <div className="bg-white border-gray-200">
         <div className="px-4 md:px-8 md:pt-6">
-          {/* Title and Subtitle */}
-          <div className="mb-4 md:mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-              {filteredPackages.length} Holiday Packages
-            </h1>
-            <p className="text-gray-600 text-xs md:text-sm mt-1">
-              Showing {filteredPackages.length} packages out of{" "}
-              {packages.length} total packages
-            </p>
-          </div>
-
-          {/* Theme and Tag Selectors */}
           <div className="flex flex-col md:flex-row gap-4 md:gap-20 md:justify-center mb-4">
-            <div className="flex items-center gap-2 md:gap-3">
+            {/* Title and Subtitle */}
+            <div className="mb-4 md:mb-6">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {filteredPackages.length} Holiday Packages
+              </h1>
+              <p className="text-gray-600 text-xs md:text-sm mt-1">
+                Showing {filteredPackages.length} packages out of{" "}
+                {packages.length} total packages
+              </p>
+            </div>
+
+            {/* Theme and Tag Selectors */}
+            {/* <div className="flex items-center gap-2 md:gap-3">
               <label className="text-xs md:text-sm font-medium text-gray-700 whitespace-nowrap">
                 Theme
               </label>
@@ -174,7 +172,7 @@ function PackagesScreen() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-2 md:gap-3">
               <label className="text-xs md:text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -246,7 +244,7 @@ function PackagesScreen() {
             </div>
 
             {/* Departure City Section */}
-            <div className="mb-4 md:mb-6 pb-4 md:pb-6 border-b border-gray-200">
+            {/* <div className="mb-4 md:mb-6 pb-4 md:pb-6 border-b border-gray-200">
               <h4 className="font-semibold text-gray-900 text-xs md:text-xs mb-2 md:mb-1">
                 Departure City
               </h4>
@@ -259,7 +257,7 @@ function PackagesScreen() {
                   All departures (33)
                 </span>
               </label>
-            </div>
+            </div> */}
 
             {/* Countries Section */}
             <div>
@@ -280,7 +278,7 @@ function PackagesScreen() {
               </div>
 
               {/* Countries List */}
-              <div className="max-h-[170px] overflow-y-auto space-y-2">
+              {/* <div className="max-h-[170px] overflow-y-auto space-y-2">
                 {filteredCountries.map((country) => (
                   <label
                     key={country.id}
@@ -298,27 +296,33 @@ function PackagesScreen() {
                     </span>
                   </label>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
 
         {/* Right Content - Packages */}
-        <div className="flex-1 pl-6 mb-10">
-          {filteredPackages.length > 0 ? (
-            <div className="space-y-4 md:space-y-6">
-              {packages.map((pkg) => (
-                <Package key={pkg._id} pkg={pkg} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-base md:text-lg">
-                No packages found matching your filters
-              </p>
-            </div>
-          )}
-        </div>
+        {isLoading ? (
+          <Loader />
+        ) : isError ? (
+          <Message>{isError}</Message>
+        ) : (
+          <div className="flex-1 pl-6 mb-10">
+            {filteredPackages.length > 0 ? (
+              <div className="space-y-4 md:space-y-6">
+                {filteredPackages.map((pkg) => (
+                  <Package key={pkg._id} pkg={pkg} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-600 text-base md:text-lg">
+                  No packages found matching your filters
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

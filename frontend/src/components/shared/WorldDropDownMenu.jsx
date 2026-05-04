@@ -174,9 +174,9 @@ function WorldDropDownMenu() {
                         {destinations.map((dest) => (
                           <li
                             key={dest}
-                            className="hover:text-blue-600 cursor-pointer"
+                            className="hover:text-blue-600 cursor-pointer text-gray-600 text-sm "
                           >
-                            <Link to="/packages/id">{dest}</Link>
+                            <Link to={`/packages/${pkg._id}`}>{dest}</Link>
                           </li>
                         ))}
                       </ul>
