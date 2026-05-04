@@ -77,7 +77,7 @@ function WorldDropDownMenu() {
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-bold",
+          "inline-flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold",
           "bg-transparent hover:bg-gray-100 transition-colors select-none",
           "focus:outline-none focus:ring-2 focus:ring-blue-500",
           isOpen && "bg-gray-100 text-black",
