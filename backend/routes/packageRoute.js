@@ -6,6 +6,7 @@ import {
   deletePackage,
   getPackageById,
   getPackages,
+  getPackagesByCity,
   updatePackage,
 } from "../controllers/packageController.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
@@ -19,5 +20,7 @@ router
   .get(getPackageById) //user
   .put(protect, admin, singleUpload, updatePackage) //admin //user multer for file upload
   .delete(protect, admin, deletePackage); //admin
+
+router.get("/city/:city", getPackagesByCity);
 
 export default router;

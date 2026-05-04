@@ -53,8 +53,8 @@ const packageSchema = new mongoose.Schema(
       required: true,
     },
 
-    destinations: {
-      type: Number,
+    destinationName: {
+      type: String,
       required: true,
       default: 0,
     },
@@ -79,7 +79,28 @@ const packageSchema = new mongoose.Schema(
       type: String,
       default: "Twin-sharing basis",
     },
+    type: {
+      type: String,
+      required: true, // india | world
+      enum: ["india", "world"],
+    },
+
+    category: {
+      type: String,
+      required: true, // north-india / asia
+    },
+
+    group: {
+      type: String,
+      required: true, // himachal / japan
+    },
+
+    destinationName: {
+      type: String,
+      required: true, // Manali / Tokyo
+    },
   },
+
   {
     timestamps: true,
   },

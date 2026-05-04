@@ -39,11 +39,16 @@ export const createNewPackage = asyncHandler(async (req, res) => {
     reviews,
     inclusive,
     days,
-    destinations,
+    // destinations,
     departures,
     highlights,
     price,
     priceNote,
+
+    type,
+    category,
+    group,
+    destinationName,
   } = req.body;
 
   const image = req.file;
@@ -53,9 +58,13 @@ export const createNewPackage = asyncHandler(async (req, res) => {
     !title ||
     !price ||
     !days ||
-    !destinations ||
+    // !destinations ||
     !departures ||
-    !highlights
+    !highlights ||
+    !type ||
+    !category ||
+    !group ||
+    !destinationName
   ) {
     res.status(400);
     throw new Error("Please provide all required fields");
@@ -90,7 +99,7 @@ export const createNewPackage = asyncHandler(async (req, res) => {
     inclusive: inclusive !== undefined ? inclusive : true,
 
     days: days || "5 Days 4 Nights",
-    destinations: destinations || 1,
+    // destinations: destinations || 1,
     departures: departures || 1,
 
     highlights: highlights || "Sample package highlights",
@@ -98,6 +107,15 @@ export const createNewPackage = asyncHandler(async (req, res) => {
     price: price || 0,
 
     priceNote: priceNote || "Prices are on twin-sharing basis.",
+
+    type: type || "Type is not consider",
+    category: category || "Type is not consider",
+    group: group || "it will comes later",
+
+    destinationName:
+      destinationName.toLowerCase() ||
+      destinationName ||
+      "Destination is comes later",
 
     user: req.admin._id,
   });
@@ -123,11 +141,16 @@ export const updatePackage = asyncHandler(async (req, res) => {
     reviews,
     inclusive,
     days,
-    destinations,
+    // destinations,
     departures,
     highlights,
     price,
     priceNote,
+
+    type,
+    category,
+    group,
+    destinationName,
   } = req.body;
   const image = req.file;
 
@@ -140,14 +163,18 @@ export const updatePackage = asyncHandler(async (req, res) => {
   }
 
   const parsedTags = tags ? JSON.parse(tags) : [];
-  const imageUri = getDataUri(image);
 
-  const cloudResponse = await cloudinary.uploader.upload(
-    imageUri.content,
-    // {
-    //   folder:"shop/products",
-    // }
-  );
+  let imageUrl = pkg.image; // keep old image
+  if (image) {
+    const imageUri = getDataUri(image);
+    const cloudResponse = await cloudinary.uploader.upload(
+      imageUri.content,
+      // {
+      //   folder:"shop/products",
+      // }
+    );
+    imageUrl = cloudResponse.secure_url;
+  }
 
   pkg.user = pkg.user || req.admin._id || req.admin;
 
@@ -159,12 +186,17 @@ export const updatePackage = asyncHandler(async (req, res) => {
     pkg.reviews = reviews;
     pkg.inclusive = inclusive;
     pkg.days = days;
-    pkg.destinations = destinations;
+    // pkg.destinations = destinations;
     pkg.departures = departures;
     pkg.highlights = highlights;
     pkg.price = price;
     pkg.priceNote = priceNote;
-    pkg.image = cloudResponse.secure_url || image;
+    pkg.image = imageUrl || image;
+    pkg.type = type || pkg.type;
+    pkg.category = category || pkg.category;
+    pkg.group = group || pkg.group;
+    pkg.destinationName = destinationName?.toLowerCase() || pkg.destinationName;
+
     const updatedPackage = await pkg.save();
 
     res.status(200).json({
@@ -190,4 +222,17 @@ export const deletePackage = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Package not found");
   }
+});
+
+//@desc get packages by city
+//@route /api/package/city/:cityid
+//access pbu
+export const getPackagesByCity = asyncHandler(async (req, res) => {
+  const { city } = req.params;
+
+  const packages = await Package.find({
+    destinationName: city,
+  });
+
+  res.json(packages);
 });

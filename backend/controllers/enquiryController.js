@@ -42,7 +42,7 @@ export const sendEnquiry = asyncHandler(async (req, res) => {
 });
 
 //@desc   get all enquiries
-//@routes  delete /api/enquiies
+//@routes  get /api/enquiies
 //@access  /private/admin
 export const getEnquiries = asyncHandler(async (req, res) => {
   const enquiries = await Enquiry.find({}).sort({ createdAt: -1 });
@@ -56,7 +56,7 @@ export const getEnquiries = asyncHandler(async (req, res) => {
 
 
 //@desc   mark as done enquiry
-//@routes  delete /api/enquiry/:id/done
+//@routes  put /api/enquiry/:id/done
 //@access  /private/admin
 export const markEnquiryDone = asyncHandler(async (req, res) => {
   const enquiry = await Enquiry.findById(req.params.id);
