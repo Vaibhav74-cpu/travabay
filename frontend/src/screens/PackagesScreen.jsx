@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Package from "@/components/shared/TravelPackage";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import packages from "../packages.js";
-
+import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice.js";
 
 const tags = [
   "All Tags",
@@ -62,17 +70,18 @@ const countries = [
   { id: 5, name: "3 Cities", count: 5 },
   { id: 6, name: "4 Cities", count: 4 },
   { id: 7, name: "Georgia", count: 5 },
-  { id: 8, name: "Singapore", count: '' },
-  { id: 9, name: "Japan", count: '' },
-  { id: 10, name: "India", count: '' },
-  { id: 11, name: "Korea", count: '' },
-  { id: 12, name: "Phillipinnes", count: '' },
-  { id: 13, name: "Sri Lanka", count: '' },
-  { id: 14, name: "Combodia", count: '' },
-  { id: 15, name: "Thailand", count: '' },
+  { id: 8, name: "Singapore", count: "" },
+  { id: 9, name: "Japan", count: "" },
+  { id: 10, name: "India", count: "" },
+  { id: 11, name: "Korea", count: "" },
+  { id: 12, name: "Phillipinnes", count: "" },
+  { id: 13, name: "Sri Lanka", count: "" },
+  { id: 14, name: "Combodia", count: "" },
+  { id: 15, name: "Thailand", count: "" },
 ];
 
 function PackagesScreen() {
+  const { data: packages, isLoading, isError } = useGetPackagesQuery();
   const [selectedTheme, setSelectedTheme] = useState("all");
   const [selectedTag, setSelectedTag] = useState("All Tags");
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
@@ -84,6 +93,7 @@ function PackagesScreen() {
     const matchesTheme =
       selectedTheme === "all" ||
       pkg.tags.some((tag) => tag.toLowerCase().includes(selectedTheme));
+      
 
     const matchesTag =
       selectedTag === "All Tags" ||
@@ -109,18 +119,22 @@ function PackagesScreen() {
 
   const togglePriceRange = (rangeId) => {
     setSelectedPriceRanges((prev) =>
-      prev.includes(rangeId) ? prev.filter((id) => id !== rangeId) : [...prev, rangeId]
+      prev.includes(rangeId)
+        ? prev.filter((id) => id !== rangeId)
+        : [...prev, rangeId],
     );
   };
 
   const toggleCountry = (countryId) => {
     setSelectedCountries((prev) =>
-      prev.includes(countryId) ? prev.filter((id) => id !== countryId) : [...prev, countryId]
+      prev.includes(countryId)
+        ? prev.filter((id) => id !== countryId)
+        : [...prev, countryId],
     );
   };
 
   const filteredCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(countrySearch.toLowerCase())
+    country.name.toLowerCase().includes(countrySearch.toLowerCase()),
   );
 
   return (
@@ -134,7 +148,8 @@ function PackagesScreen() {
               {filteredPackages.length} Holiday Packages
             </h1>
             <p className="text-gray-600 text-xs md:text-sm mt-1">
-              Showing {filteredPackages.length} packages out of {packages.length} total packages
+              Showing {filteredPackages.length} packages out of{" "}
+              {packages.length} total packages
             </p>
           </div>
 
@@ -212,14 +227,19 @@ function PackagesScreen() {
               </h4>
               <div className="space-y-1">
                 {priceRanges.map((range) => (
-                  <label key={range.id} className="flex items-center gap-3 cursor-pointer">
+                  <label
+                    key={range.id}
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
                     <input
                       type="checkbox"
                       checked={selectedPriceRanges.includes(range.id)}
                       onChange={() => togglePriceRange(range.id)}
                       className="w-4 h-4 rounded border-gray-300 text-blue-600"
                     />
-                    <span className="text-xs md:text-xs text-gray-700">{range.label}</span>
+                    <span className="text-xs md:text-xs text-gray-700">
+                      {range.label}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -235,7 +255,9 @@ function PackagesScreen() {
                   type="checkbox"
                   className="w-4 h-4 rounded border-gray-300 text-blue-600"
                 />
-                <span className="text-xs md:text-xs text-gray-700">All departures (33)</span>
+                <span className="text-xs md:text-xs text-gray-700">
+                  All departures (33)
+                </span>
               </label>
             </div>
 
@@ -260,7 +282,10 @@ function PackagesScreen() {
               {/* Countries List */}
               <div className="max-h-[170px] overflow-y-auto space-y-2">
                 {filteredCountries.map((country) => (
-                  <label key={country.id} className="flex items-center gap-3 cursor-pointer">
+                  <label
+                    key={country.id}
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
                     <input
                       type="checkbox"
                       checked={selectedCountries.includes(country.id)}
@@ -268,7 +293,8 @@ function PackagesScreen() {
                       className="w-4 h-4 rounded border-gray-300 text-blue-600"
                     />
                     <span className="text-xs md:text-xs text-gray-700">
-                      {country.name} <span className="text-gray-500">({country.count})</span>
+                      {country.name}{" "}
+                      <span className="text-gray-500">({country.count})</span>
                     </span>
                   </label>
                 ))}
@@ -281,8 +307,8 @@ function PackagesScreen() {
         <div className="flex-1 pl-6 mb-10">
           {filteredPackages.length > 0 ? (
             <div className="space-y-4 md:space-y-6">
-              {filteredPackages.map((pkg) => (
-                <Package key={pkg.id} pkg={pkg} />
+              {packages.map((pkg) => (
+                <Package key={pkg._id} pkg={pkg} />
               ))}
             </div>
           ) : (

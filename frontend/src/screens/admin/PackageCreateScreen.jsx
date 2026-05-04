@@ -127,6 +127,7 @@ function PackageCreateScreen() {
     formData.append("title", input.title);
     formData.append("badge", input.badge);
     formData.append("tags", JSON.stringify(input.tags));
+    // formData.append("tags", input.tags);
     formData.append("rating", input.rating);
     formData.append("reviews", input.reviews);
     formData.append("inclusive", input.inclusive);
