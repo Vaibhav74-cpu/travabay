@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ForexDropdown from "@/components/shared/ForexDropdown";
+
+
 
 function ForexScreen() {
   const [activeRegion, setActiveRegion] = useState("asia");
@@ -44,11 +47,10 @@ function ForexScreen() {
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full left-0 mt-1",
-            "w-[800px] h-[200px] bg-white rounded-lg shadow-2xl border border-gray-100 text-black",
+            "absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[420px] h-[500px] sm:w-[340px] max-w-[calc(100vw-16px)]",
           )}
         >
-          <p>forex data</p>
+        <ForexDropdown />
         </div>
       )}
     </div>
