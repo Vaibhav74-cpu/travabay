@@ -15,7 +15,7 @@ export const packagesApislice = apiSlice.injectEndpoints({
 
     //PUBLIC - USER AND ADMIN GET ALL PACKAGES
     getPackages: builder.query({
-      query: ({ keyword = "" }) => ({
+      query: ({ keyword } = {}) => ({
         url: PACKAGE_URL,
         params: {
           // pageNumber,

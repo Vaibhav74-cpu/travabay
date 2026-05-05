@@ -15,7 +15,7 @@ import packages from "../packages.js";
 import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice.js";
 import Loader from "@/components/shared/Loader.jsx";
 import Message from "@/components/shared/Message.jsx";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SearchBox from "@/components/shared/SearchBox.jsx";
 
 const tags = [
@@ -87,12 +87,14 @@ const priceRanges = [
 // ];
 
 function PackagesScreen() {
-  const { keyword } = useParams();
+  const { keyword, pageNumber } = useParams();
   const {
     data: packages,
     isLoading,
     isError,
-  } = useGetPackagesQuery({ keyword: keyword || "" });
+  } = useGetPackagesQuery({ keyword: keyword, pageNumber: pageNumber || "" });
+  // console.log(packages);
+
   const [selectedTheme, setSelectedTheme] = useState("all");
   const [selectedTag, setSelectedTag] = useState("All Tags");
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
@@ -169,6 +171,14 @@ function PackagesScreen() {
       {/* Header Section */}
       <div className="bg-white border-gray-200 ">
         <div className="px-4 md:px-8 md:pt-6">
+          {keyword && (
+            <Link
+              to="/"
+              className="bg-gray-100 p-2 rounded-lg shadow-sm cursor-pointer hover:bg-slate-300"
+            >
+              Back
+            </Link>
+          )}
           <div className="flex flex-col md:flex-row gap-4 md:gap-20 md:justify-center mb-4">
             {/* Title and Subtitle */}
             <div className="mb-4 md:mb-6">
@@ -279,15 +289,15 @@ function PackagesScreen() {
               {/* Search Input */}
               <div className="relative mb-3">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                {/* <input
+                <input
                   type="text"
                   placeholder="Search"
                   value={countrySearch}
                   onChange={(e) => setCountrySearch(e.target.value)}
                   className="w-full pl-9 pr-3 py-1 border border-gray-300 rounded-full text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-                /> */}
+                />
 
-                <SearchBox />
+                {/* <SearchBox /> */}
               </div>
 
               {/* Countries List */}
