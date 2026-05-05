@@ -61,11 +61,24 @@ function PackageCreateScreen() {
   };
   const tagOptions = [
     "GROUP TOUR",
+    "PRIVATE TOUR",
     "FAMILY",
-    "BEACH",
+    "COUPLE",
+    "SOLO",
+
     "ADVENTURE",
-    "HONEYMOON",
     "TREKKING",
+    "BEACH",
+    "MOUNTAINS",
+    "WILDLIFE",
+
+    "HONEYMOON",
+    "LUXURY",
+    "BUDGET",
+    "RELAXATION",
+
+    "CULTURE",
+    "WEEKEND GETAWAY",
   ];
 
   // STATES
@@ -415,6 +428,7 @@ function PackageCreateScreen() {
             <input
               type="number"
               name="departures"
+              min={1}
               value={input.departures}
               onChange={inputHandler}
               placeholder="Departures"

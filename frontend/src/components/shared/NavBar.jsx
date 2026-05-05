@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from "../../assets/Travabay_logo.png";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import SearchBox from "./SearchBox";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +19,15 @@ function NavBar() {
         </div>
 
         {/* CENTER: SEARCH (hidden on small screens) */}
-        <div className="hidden md:flex flex-1 max-w-xl mx-6">
+        {/* <div className="hidden md:flex flex-1 max-w-xl mx-6">
           <input
             type="text"
             placeholder='Search "Eiffel Tower"'
             className="w-full rounded-full px-4 h-10 text-sm text-black"
           />
-        </div>
+        </div> */}
+
+        <SearchBox />
 
         {/* RIGHT: BUTTONS (desktop) */}
         <div className="hidden md:flex items-center gap-3 font-bold text-sm">

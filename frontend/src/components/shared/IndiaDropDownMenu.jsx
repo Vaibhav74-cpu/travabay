@@ -8,7 +8,7 @@ import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
 
 function IndiaDropDownMenu() {
   const { data: pkg, isLoading, isError } = useGetPackagesQuery();
-  console.log(pkg);
+  // console.log(pkg);
 
   // STATIC DATA
   const categories = ["north-india", "south-india", "west-india", "north-east"];

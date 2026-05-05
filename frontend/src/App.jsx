@@ -35,7 +35,7 @@ const appRouter = createBrowserRouter([
       // Mega Navbar
       { path: "/corporate-travel", element: <CorporateTravelScreen /> },
       { path: "/contact-us", element: <ContactScreen /> },
-
+      { path: "/search/:keyword", element: <PackagesScreen /> },
       { path: "/packages", element: <PackagesScreen /> },
       { path: "/package/:id", element: <PackageDatailsScreen /> },
       { path: "/about-us", element: <AboutUsScreen /> },

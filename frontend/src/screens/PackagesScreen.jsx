@@ -15,26 +15,30 @@ import packages from "../packages.js";
 import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice.js";
 import Loader from "@/components/shared/Loader.jsx";
 import Message from "@/components/shared/Message.jsx";
+import { useParams } from "react-router-dom";
+import SearchBox from "@/components/shared/SearchBox.jsx";
 
 const tags = [
   "All Tags",
-  "Beach",
-  "Adventure",
-  "Mountains",
-  "Private",
-  "Peaceful Beaches",
-  "International",
-  "Culture",
-  "Heritage",
-  "Nature",
-  "Couples",
-  "Family",
-  "Southeast Asia",
-  "Premium Tour",
-  "Honeymoon",
-  "Island Escape",
-  "Luxury",
-  "Romantic Gateway",
+  "GROUP TOUR",
+  "PRIVATE TOUR",
+  "FAMILY",
+  "COUPLE",
+  "SOLO",
+
+  "ADVENTURE",
+  "TREKKING",
+  "BEACH",
+  "MOUNTAINS",
+  "WILDLIFE",
+
+  "HONEYMOON",
+  "LUXURY",
+  "BUDGET",
+  "RELAXATION",
+
+  "CULTURE",
+  "WEEKEND GETAWAY",
 ];
 
 // const themes = [
@@ -83,7 +87,12 @@ const priceRanges = [
 // ];
 
 function PackagesScreen() {
-  const { data: packages, isLoading, isError } = useGetPackagesQuery();
+  const { keyword } = useParams();
+  const {
+    data: packages,
+    isLoading,
+    isError,
+  } = useGetPackagesQuery({ keyword: keyword || "" });
   const [selectedTheme, setSelectedTheme] = useState("all");
   const [selectedTag, setSelectedTag] = useState("All Tags");
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
@@ -171,7 +180,6 @@ function PackagesScreen() {
                 {packages.length} total packages
               </p>
             </div>
-
 
             <div className="flex items-center gap-2 md:gap-3">
               <label className="text-xs md:text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -271,13 +279,15 @@ function PackagesScreen() {
               {/* Search Input */}
               <div className="relative mb-3">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
+                {/* <input
                   type="text"
                   placeholder="Search"
                   value={countrySearch}
                   onChange={(e) => setCountrySearch(e.target.value)}
                   className="w-full pl-9 pr-3 py-1 border border-gray-300 rounded-full text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-                />
+                /> */}
+
+                <SearchBox />
               </div>
 
               {/* Countries List */}
@@ -303,8 +313,6 @@ function PackagesScreen() {
             </div>
           </div>
         </div>
-
-
 
         {/* Right Content - Packages */}
         {isLoading ? (

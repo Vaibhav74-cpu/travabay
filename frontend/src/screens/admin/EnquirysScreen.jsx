@@ -83,10 +83,10 @@ function EnquirysScreen() {
                   <TableCell>{enquiry?.phoneNumber}</TableCell>
 
                   {/*  DESTINATION */}
-                  <TableCell>{enquiry?.preferredDestination}</TableCell>
+                  <TableCell>{enquiry?.destination}</TableCell>
 
                   {/* TRAVELLERS */}
-                  <TableCell>{enquiry?.numberOfTravellers}</TableCell>
+                  <TableCell>{enquiry?.travellers}</TableCell>
 
                   {/* TRAVEL DETAILS */}
                   <TableCell>{enquiry?.travelDetails}</TableCell>
