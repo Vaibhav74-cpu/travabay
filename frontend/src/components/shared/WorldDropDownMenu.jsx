@@ -6,7 +6,7 @@ import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
 
 function WorldDropDownMenu() {
   const { data: pkg, isLoading, isError } = useGetPackagesQuery();
-  console.log(pkg);
+  // console.log(pkg);
   // const data = {
   //   world: {
   //     africa: {
@@ -176,7 +176,9 @@ function WorldDropDownMenu() {
                             key={dest}
                             className="hover:text-blue-600 cursor-pointer text-gray-600 text-sm "
                           >
-                            <Link to={`/packages/${pkg._id}`}>{dest}</Link>
+                            <Link to={`/city/${dest?.toLowerCase()}`}>
+                              {dest}
+                            </Link>
                           </li>
                         ))}
                       </ul>

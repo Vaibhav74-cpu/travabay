@@ -22,6 +22,15 @@ export const packagesApislice = apiSlice.injectEndpoints({
       providesTags: ["Packages"],
     }),
 
+    //PUBLIC - USER GET PACKAGES MY CITIES
+    getPackagesByCity: builder.query({
+      query: (city) => ({
+        url: `${PACKAGE_URL}/city/${city}`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Packages"],
+    }),
+
     //PUBLIC -  USER AND ADMIN  GET PACKAGE DETAILS
     getPackageById: builder.query({
       query: (packageId) => ({
@@ -56,6 +65,7 @@ export const {
   useCreatePackageMutation,
   useUpdatePackageMutation,
   useDeletePackageMutation,
+  useGetPackagesByCityQuery,
 } = packagesApislice;
 
 // keepUnusedDataFor-> keep data for 5 seconds after page leave

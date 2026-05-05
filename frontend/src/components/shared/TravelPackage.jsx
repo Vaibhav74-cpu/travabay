@@ -4,7 +4,7 @@ import EnquiryForm from "./TravelEnquiryForm.jsx";
 import { ChevronDown, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function Package({ pkg }) {
+function TravelPackage({ pkg }) {
   const navigate = useNavigate();
   const [showFullHighlights, setShowFullHighlights] = useState(false);
   const [showFullPriceNote, setShowFullPriceNote] = useState(false);
@@ -77,10 +77,10 @@ function Package({ pkg }) {
               className={`text-xs md:text-sm px-2 py-1 rounded-full font-medium ${
                 pkg.inclusive
                   ? "bg-green-100 text-green-700"
-                  : "bg-gray-200 text-gray-600"
+                  : "bg-red-100 text-red-700"
               }`}
             >
-              {pkg.inclusive ? "All Inclusive" : "Not Inclusive"}
+              {pkg.inclusive ? "All Inclusive" : "Exclusive"}
             </span>
           </div>
 
@@ -209,4 +209,4 @@ function Package({ pkg }) {
   );
 }
 
-export default Package;
+export default TravelPackage;

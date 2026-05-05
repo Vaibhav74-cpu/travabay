@@ -21,6 +21,7 @@ import BookingScreen from "./screens/admin/BookingScreen";
 import PackageEditScreen from "./screens/admin/PackageEditScreen";
 import PackageCreateScreen from "./screens/admin/PackageCreateScreen";
 import AdminRoutes from "./components/shared/AdminRoutes";
+import PackagesByCityScreen from "./screens/PackagesByCityScreen";
 
 const appRouter = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ const appRouter = createBrowserRouter([
       { path: "/terms-and-conditions", element: <TermsConditonsScreen /> },
       { path: "/privacy-policy", element: <PrivacyPolicyScreen /> },
       { path: "/india/list", element: <PrivacyPolicyScreen /> },
+      { path: "/city/:city", element: <PackagesByCityScreen /> },
     ],
   },
 

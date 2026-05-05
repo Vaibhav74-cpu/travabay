@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Package from "@/components/shared/TravelPackage";
+import TravelPackage from "@/components/shared/TravelPackage";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import packages from "../packages.js";
@@ -37,24 +37,24 @@ const tags = [
   "Romantic Gateway",
 ];
 
-const themes = [
-  { value: "all", label: "All Themes" },
-  { value: "beach", label: "BEACH" },
-  { value: "culture", label: "CULTURE | HERITAGE | NATURE" },
-  { value: "international", label: "INTERNATIONAL" },
-  { value: "premium", label: "CULTURE | CHERRY BLOSSOM | PREMIUM" },
-  { value: "nature", label: "NATURE, MOUNTAINS, LAKES" },
-  { value: "couple", label: "COUPLE" },
-  { value: "trek", label: "TREK" },
-  { value: "heritage", label: "HERITAGE" },
-  { value: "adventure", label: "ADVENTURE" },
-  { value: "mountains", label: "ADVENTURE • CAFE • MOUNTAINS" },
-  { value: "luxury", label: "PRIVATE LUXURY TOUR" },
-  { value: "private", label: "Private Tour / Wellness Retreat" },
-  { value: "himalaya", label: "HIM • NATURE • TREK" },
-  { value: "camping", label: "TREK • HIMALAYA • CAMPING • NATURE" },
-  { value: "leisure", label: "INTERNATIONAL | LEISURE" },
-];
+// const themes = [
+//   { value: "all", label: "All Themes" },
+//   { value: "beach", label: "BEACH" },
+//   { value: "culture", label: "CULTURE | HERITAGE | NATURE" },
+//   { value: "international", label: "INTERNATIONAL" },
+//   { value: "premium", label: "CULTURE | CHERRY BLOSSOM | PREMIUM" },
+//   { value: "nature", label: "NATURE, MOUNTAINS, LAKES" },
+//   { value: "couple", label: "COUPLE" },
+//   { value: "trek", label: "TREK" },
+//   { value: "heritage", label: "HERITAGE" },
+//   { value: "adventure", label: "ADVENTURE" },
+//   { value: "mountains", label: "ADVENTURE • CAFE • MOUNTAINS" },
+//   { value: "luxury", label: "PRIVATE LUXURY TOUR" },
+//   { value: "private", label: "Private Tour / Wellness Retreat" },
+//   { value: "himalaya", label: "HIM • NATURE • TREK" },
+//   { value: "camping", label: "TREK • HIMALAYA • CAMPING • NATURE" },
+//   { value: "leisure", label: "INTERNATIONAL | LEISURE" },
+// ];
 
 const priceRanges = [
   { id: 1, label: "Under ₹ 20,000", min: 0, max: 20000 },
@@ -64,23 +64,23 @@ const priceRanges = [
   { id: 5, label: "₹ 2L above", min: 200000, max: Infinity },
 ];
 
-const countries = [
-  { id: 1, name: "1", count: 1 },
-  { id: 2, name: "2", count: 1 },
-  { id: 3, name: "5", count: 1 },
-  { id: 4, name: "2 Cities", count: 6 },
-  { id: 5, name: "3 Cities", count: 5 },
-  { id: 6, name: "4 Cities", count: 4 },
-  { id: 7, name: "Georgia", count: 5 },
-  { id: 8, name: "Singapore", count: "" },
-  { id: 9, name: "Japan", count: "" },
-  { id: 10, name: "India", count: "" },
-  { id: 11, name: "Korea", count: "" },
-  { id: 12, name: "Phillipinnes", count: "" },
-  { id: 13, name: "Sri Lanka", count: "" },
-  { id: 14, name: "Combodia", count: "" },
-  { id: 15, name: "Thailand", count: "" },
-];
+// const countries = [
+//   { id: 1, name: "1", count: 1 },
+//   { id: 2, name: "2", count: 1 },
+//   { id: 3, name: "5", count: 1 },
+//   { id: 4, name: "2 Cities", count: 6 },
+//   { id: 5, name: "3 Cities", count: 5 },
+//   { id: 6, name: "4 Cities", count: 4 },
+//   { id: 7, name: "Georgia", count: 5 },
+//   { id: 8, name: "Singapore", count: "" },
+//   { id: 9, name: "Japan", count: "" },
+//   { id: 10, name: "India", count: "" },
+//   { id: 11, name: "Korea", count: "" },
+//   { id: 12, name: "Phillipinnes", count: "" },
+//   { id: 13, name: "Sri Lanka", count: "" },
+//   { id: 14, name: "Combodia", count: "" },
+//   { id: 15, name: "Thailand", count: "" },
+// ];
 
 function PackagesScreen() {
   const { data: packages, isLoading, isError } = useGetPackagesQuery();
@@ -92,6 +92,26 @@ function PackagesScreen() {
 
   // Filter packages based on selected filters
   const filteredPackages = (packages || []).filter((pkg) => {
+    //filter by tag
+    if (selectedTag !== "All Tags") {
+      // Check if package has tags array and includes the selected tag
+      const hasTag =
+        pkg.tags &&
+        pkg.tags.some((tag) => tag.toLowerCase() === selectedTag.toLowerCase());
+
+      // Also check if package title or description contains the tag
+      const titleContainsTag = pkg.title
+        ?.toLowerCase()
+        .includes(selectedTag.toLowerCase());
+      const descriptionContainsTag = pkg.description
+        ?.toLowerCase()
+        .includes(selectedTag.toLowerCase());
+
+      if (!hasTag && !titleContainsTag && !descriptionContainsTag) {
+        return false;
+      }
+    }
+
     // if no filter selected → show all
     if (selectedPriceRanges.length === 0) return true;
 
@@ -138,7 +158,7 @@ function PackagesScreen() {
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Header Section */}
-      <div className="bg-white border-gray-200">
+      <div className="bg-white border-gray-200 ">
         <div className="px-4 md:px-8 md:pt-6">
           <div className="flex flex-col md:flex-row gap-4 md:gap-20 md:justify-center mb-4">
             {/* Title and Subtitle */}
@@ -152,27 +172,6 @@ function PackagesScreen() {
               </p>
             </div>
 
-            {/* Theme and Tag Selectors */}
-            {/* <div className="flex items-center gap-2 md:gap-3">
-              <label className="text-xs md:text-sm font-medium text-gray-700 whitespace-nowrap">
-                Theme
-              </label>
-              <Select value={selectedTheme} onValueChange={setSelectedTheme}>
-                <SelectTrigger className="w-full md:w-[300px] border-gray-300 text-xs md:text-sm">
-                  <SelectValue placeholder="All Themes" />
-                </SelectTrigger>
-                <SelectContent className="max-h-[300px] overflow-y-auto bg-white">
-                  <SelectGroup>
-                    <SelectLabel></SelectLabel>
-                    {themes.map((theme) => (
-                      <SelectItem key={theme.value} value={theme.value}>
-                        {theme.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div> */}
 
             <div className="flex items-center gap-2 md:gap-3">
               <label className="text-xs md:text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -182,7 +181,11 @@ function PackagesScreen() {
                 <SelectTrigger className="w-full md:w-[300px] border-gray-300 text-xs md:text-sm">
                   <SelectValue placeholder="All Tags" />
                 </SelectTrigger>
-                <SelectContent className="max-h-[300px] overflow-y-auto bg-white">
+                <SelectContent
+                  position="popper"
+                  sideOffset={5}
+                  className="w-[var(--radix-select-trigger-width)]  max-h-[300px] overflow-y-auto bg-white z-50"
+                >
                   <SelectGroup>
                     <SelectLabel></SelectLabel>
                     {tags.map((tag, index) => (
@@ -301,6 +304,8 @@ function PackagesScreen() {
           </div>
         </div>
 
+
+
         {/* Right Content - Packages */}
         {isLoading ? (
           <Loader />
@@ -311,7 +316,7 @@ function PackagesScreen() {
             {filteredPackages.length > 0 ? (
               <div className="space-y-4 md:space-y-6">
                 {filteredPackages.map((pkg) => (
-                  <Package key={pkg._id} pkg={pkg} />
+                  <TravelPackage key={pkg._id} pkg={pkg} />
                 ))}
               </div>
             ) : (

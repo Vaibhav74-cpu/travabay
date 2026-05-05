@@ -8,7 +8,7 @@ import { useGetPackagesQuery } from "@/redux/slices/packageApiSlice";
 
 function IndiaDropDownMenu() {
   const { data: pkg, isLoading, isError } = useGetPackagesQuery();
-  // console.log(pkg);
+  console.log(pkg);
 
   // STATIC DATA
   const categories = ["north-india", "south-india", "west-india", "north-east"];
@@ -157,13 +157,13 @@ function IndiaDropDownMenu() {
                         {cities.map((city) => (
                           <li key={city}>
                             <Link
-                              to={`/packages/${city.toLowerCase()}`}
+                              to={`/city/${city?.toLowerCase()}`}
                               onClick={() => setIsOpen(false)}
                               className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
                             >
                               {city}
                             </Link>
-                          </li>
+                          </li> 
                         ))}
                       </ul>
                     </div>
