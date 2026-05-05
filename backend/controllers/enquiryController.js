@@ -15,6 +15,16 @@ export const sendEnquiry = asyncHandler(async (req, res) => {
     travelDetails,
   } = req.body;
 
+  // console.log(
+  //   name,
+  //   email,
+  //   countryCode,
+  //   phoneNumber,
+  //   destination,
+  //   travellers,
+  //   travelDetails,
+  // );
+
   // Validation
   if (!name || !email || !phoneNumber || !destination || !travellers) {
     res.status(400);
@@ -54,7 +64,6 @@ export const getEnquiries = asyncHandler(async (req, res) => {
   });
 });
 
-
 //@desc   mark as done enquiry
 //@routes  put /api/enquiry/:id/done
 //@access  /private/admin
@@ -76,7 +85,6 @@ export const markEnquiryDone = asyncHandler(async (req, res) => {
     enquiry: updatedEnquiry,
   });
 });
-
 
 //@desc    delete enquiery
 //@routes  delete /api/admin/:id

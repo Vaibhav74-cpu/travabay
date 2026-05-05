@@ -10,7 +10,10 @@ import { log } from "console";
 // route-> /api/packages/
 //access-> public
 export const getPackages = asyncHandler(async (req, res) => {
-  const packages = await Package.find({});
+  const keyword = req.query.keyword
+    ? { title: { $regex: req.query.keyword, $options: "i" } }
+    : {};
+  const packages = await Package.find({ ...keyword });
   res.json(packages);
 });
 
@@ -84,6 +87,16 @@ export const createNewPackage = asyncHandler(async (req, res) => {
   // Upload to Cloudinary
   const cloudResponse = await cloudinary.uploader.upload(imageUri.content);
 
+  let parsedTags = [];
+
+  if (tags) {
+    try {
+      parsedTags = typeof tags === "string" ? JSON.parse(tags) : tags;
+    } catch (error) {
+      parsedTags = [];
+    }
+  }
+
   // Create package using your package structure from uploaded data :contentReference[oaicite:0]{index=0}
   const packageData = new Package({
     title: title || "Sample Package",
@@ -91,7 +104,7 @@ export const createNewPackage = asyncHandler(async (req, res) => {
 
     badge: badge || "NEW",
 
-    tags: tags || [],
+    tags: parsedTags,
 
     rating: rating || 0,
     reviews: reviews || 0,
@@ -225,13 +238,13 @@ export const deletePackage = asyncHandler(async (req, res) => {
 });
 
 //@desc get packages by city
-//@route /api/package/city/:cityid
+//@route /api/package/city/:city
 //access pbu
 export const getPackagesByCity = asyncHandler(async (req, res) => {
   const { city } = req.params;
 
   const packages = await Package.find({
-    destinationName: city,
+    destinationName: { $regex: `^${city}$`, $options: "i" },
   });
 
   res.json(packages);
