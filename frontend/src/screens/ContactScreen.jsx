@@ -86,15 +86,15 @@ const ContactScreen = () => {
     // formData.append("travellers", input.travellers);
     // formData.append("travelDetails", input.travelDetails);
 
-      const payload = {
-    name: input.name,
-    email: input.email,
-    countryCode: input.countryCode,
-    phoneNumber: input.phone,
-    destination: input.destination,
-    travellers: input.travellers,
-    travelDetails: input.travelDetails || "",
-  };
+    const payload = {
+      name: input.name,
+      email: input.email,
+      countryCode: input.countryCode,
+      phoneNumber: input.phone,
+      destination: input.destination,
+      travellers: input.travellers,
+      travelDetails: input.travelDetails || "",
+    };
 
     try {
       const res = await createEnquiery(payload).unwrap();

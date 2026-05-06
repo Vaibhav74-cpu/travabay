@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import { FaFacebook } from "react-icons/fa";
 
 function Footer() {
   return (
@@ -79,6 +80,7 @@ function Footer() {
           <h3>Resources</h3>
           <ul>
             <li>
+              <FaFacebook/>
               <Link> Facebook</Link>
             </li>
             <li>
