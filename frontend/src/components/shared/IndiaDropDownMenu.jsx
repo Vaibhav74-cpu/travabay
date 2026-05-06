@@ -36,7 +36,7 @@ function IndiaDropDownMenu() {
   //     },
   //   },
   // };
-  
+
   const [activeCategory, setActiveCategory] = useState("north-india");
   const [isOpen, setIsOpen] = useState(false);
   const [dynamicData, setDynamicData] = useState({});
@@ -107,10 +107,13 @@ function IndiaDropDownMenu() {
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full left-0 mt-1",
-            "w-[800px] bg-white rounded-lg shadow-2xl border border-gray-100",
-            "grid grid-cols-4 gap-6 p-6",
-            "z-[9999]",
+            "absolute top-full z-[9999]",
+            "mt-1 bg-white rounded-lg shadow-2xl border border-gray-100",
+            "left-0 right-0 w-auto",
+            "sm:right-auto sm:w-[520px]",
+            "lg:w-[800px]",
+            "flex flex-col",
+            "lg:grid lg:grid-cols-4 lg:gap-6 lg:p-6",
           )}
         >
           {/* LEFT SIDEBAR */}
@@ -125,6 +128,7 @@ function IndiaDropDownMenu() {
                 onClick={() => setActiveCategory(category)}
                 className={cn(
                   "cursor-pointer px-3 py-2 rounded capitalize text-sm transition-colors",
+                  "px-2 py-2.5 lg:px-3 lg:py-2 lg:text-left",
                   activeCategory === category
                     ? "bg-blue-100 text-blue-600 font-medium"
                     : "hover:bg-gray-100 text-gray-700",
@@ -135,8 +139,15 @@ function IndiaDropDownMenu() {
             ))}
           </div>
 
+          <hr className="border-gray-200 mx-3 lg:hidden" />
+
           {/* RIGHT CONTENT */}
-          <div className="col-span-3">
+          <div
+            className={cn(
+              "p-3",
+              "lg:col-span-3 lg:p-0", // Desktop
+            )}
+          >
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
               All Destinations
             </p>
@@ -146,7 +157,14 @@ function IndiaDropDownMenu() {
             ) : !dynamicData[activeCategory] ? (
               <p className="text-sm text-gray-400">No destinations available</p>
             ) : (
-              <div className="grid grid-cols-3 gap-6">
+              <div
+                className={cn(
+                  // ─── Mobile/tablet
+                  "grid grid-cols-2 gap-4",
+                  // ─── Desktop: restore original 3-column grid ─
+                  "lg:grid-cols-3 lg:gap-6",
+                )}
+              >
                 {Object.entries(dynamicData[activeCategory] || {}).map(
                   ([group, cities]) => (
                     <div key={group}>
@@ -163,7 +181,7 @@ function IndiaDropDownMenu() {
                             >
                               {city}
                             </Link>
-                          </li> 
+                          </li>
                         ))}
                       </ul>
                     </div>

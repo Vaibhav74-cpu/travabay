@@ -1,35 +1,72 @@
 import { Link } from "react-router-dom";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 function Paginate({ page, pages, isAdmin = false, keyword = "" }) {
   const totalPages = Math.ceil(pages);
 
   if (totalPages <= 1) return null;
 
+  const createPageUrl = (pageNumber) => {
+    return !isAdmin
+      ? keyword
+        ? `/search/${keyword}/page/${pageNumber}`
+        : `/page/${pageNumber}`
+      : `/admin/productlist/${pageNumber}`;
+  };
+
   return (
-    <div className="flex justify-center mt-8 flex-wrap gap-2">
-      {[...Array(totalPages).keys()].map((x) => {
-        const pageNumber = x + 1;
+    <div className="mt-10 flex justify-center">
+      <Pagination>
+        <PaginationContent>
+          {/* PREVIOUS */}
+          {page > 1 && (
+            <PaginationItem>
+              <PaginationPrevious
+                asChild
+              >
+                <Link to={createPageUrl(page - 1)} />
+              </PaginationPrevious>
+            </PaginationItem>
+          )}
 
-        const url = !isAdmin
-          ? keyword
-            ? `/search/${keyword}/page/${pageNumber}`
-            : `/page/${pageNumber}`
-          : `/admin/productlist/${pageNumber}`;
+          {/* PAGE NUMBERS */}
+          {[...Array(totalPages).keys()].map((x) => {
+            const pageNumber = x + 1;
 
-        return (
-          <Link
-            key={pageNumber}
-            to={url}
-            className={`px-4 py-2 rounded-full text-sm border transition ${
-              pageNumber === page
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-            }`}
-          >
-            {pageNumber}
-          </Link>
-        );
-      })}
+            return (
+              <PaginationItem key={pageNumber}>
+                <PaginationLink
+                  asChild
+                  isActive={pageNumber === page}
+                >
+                  <Link to={createPageUrl(pageNumber)}>
+                    {pageNumber}
+                  </Link>
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
+
+          {/* NEXT */}
+          {page < totalPages && (
+            <PaginationItem>
+              <PaginationNext
+                asChild
+              >
+                <Link to={createPageUrl(page + 1)} />
+              </PaginationNext>
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

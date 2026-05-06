@@ -89,7 +89,7 @@ function ReserveSpot({ pkg, reserveSpot }) {
       <SheetTrigger asChild>
         <Button
           type="button"
-          className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 rounded-xl text-sm transition-colors"
+          className="w-full h-11 bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 rounded-xl text-sm transition-colors"
         >
           Reserve your spot
         </Button>
