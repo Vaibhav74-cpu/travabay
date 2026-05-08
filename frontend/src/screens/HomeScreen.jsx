@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import HeroBanner from "@/components/shared/HeroBanner";
 import JourneyCard from "@/components/shared/JourneyCard";
 import PackagesCarousal from "@/components/shared/PackagesCarousal";
+import HomePackageGrid from "@/components/shared/HomePackageGrid";
 
 function HomeScreen() {
   
@@ -14,6 +15,7 @@ function HomeScreen() {
       <HeroBanner />
       <JourneyCard />
        <PackagesCarousal />
+       <HomePackageGrid />
       {/* <Card /> */}
     </>
   );
