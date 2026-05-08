@@ -8,12 +8,11 @@ import JourneyCard from "@/components/shared/JourneyCard";
 import PackagesCarousal from "@/components/shared/PackagesCarousal";
 
 function HomeScreen() {
-  
   return (
     <>
       <HeroBanner />
       <JourneyCard />
-       <PackagesCarousal />
+      <PackagesCarousal />
       {/* <Card /> */}
     </>
   );
